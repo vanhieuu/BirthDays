@@ -88,9 +88,11 @@ a {
 .page-shell {
   position: relative;
   z-index: 1;
+  display: grid;
+  gap: 1.35rem;
   width: min(1120px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 2rem 0 4rem;
+  padding: 1.5rem 0 4rem;
 }
 
 .panel {
@@ -104,8 +106,9 @@ a {
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.8fr);
-  gap: 1.5rem;
-  padding: 1.6rem;
+  align-items: stretch;
+  gap: 1.75rem;
+  padding: 1.85rem;
 }
 
 .hero-copy,
@@ -113,8 +116,15 @@ a {
 .story-card,
 .moments-section,
 .surprises-section,
+.interactive-section,
 .finale-section {
-  padding: 1.75rem;
+  padding: 1.85rem;
+}
+
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .eyebrow {
@@ -135,7 +145,7 @@ h2 {
 
 h1 {
   font-size: clamp(2.8rem, 5vw, 5.4rem);
-  max-width: 10ch;
+  max-width: 11.5ch;
 }
 
 h2 {
@@ -151,6 +161,19 @@ h2 {
   color: var(--muted);
   font-size: 1.02rem;
   line-height: 1.75;
+}
+
+.hero-lead {
+  max-width: 34rem;
+  margin-top: 1.15rem;
+  font-size: 1.08rem;
+}
+
+.hero-note,
+#storyIntro,
+.interactive-copy,
+.final-copy {
+  max-width: 40rem;
 }
 
 .hero-actions {
@@ -239,7 +262,6 @@ h2 {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1.25rem;
-  margin-top: 1.25rem;
 }
 
 .accent-card {
@@ -271,13 +293,14 @@ h2 {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
+  max-width: 44rem;
 }
 
 .moments-section,
 .surprises-section,
 .interactive-section,
 .finale-section {
-  margin-top: 1.25rem;
+  margin-top: 0;
 }
 
 .moments-grid,
@@ -373,8 +396,7 @@ h2 {
 }
 
 .interactive-copy {
-  margin: 0.9rem 0 0;
-  max-width: 62ch;
+  margin: 0.95rem 0 0;
   color: var(--muted);
   line-height: 1.8;
 }
@@ -390,6 +412,7 @@ h2 {
 .interactive-status {
   color: var(--muted);
   font-size: 0.96rem;
+  min-height: 1.5rem;
 }
 
 .interactive-stage-wrap {
@@ -618,6 +641,7 @@ h2 {
 @media (max-width: 680px) {
   .page-shell {
     width: min(100% - 1rem, 1120px);
+    gap: 1rem;
     padding-top: 1rem;
   }
 
@@ -631,8 +655,14 @@ h2 {
     padding: 1.25rem;
   }
 
+  .hero {
+    gap: 1rem;
+    padding: 1.25rem;
+  }
+
   h1 {
     font-size: clamp(2.4rem, 16vw, 4rem);
+    max-width: 100%;
   }
 
   .countdown-grid {
