@@ -14,7 +14,7 @@ if (!stage || !startGestureBtn || !toggleMessageBtn || !gestureStatus || !gestur
 }
 
 const isCompactScreen = window.innerWidth < 768;
-const particleCount = isCompactScreen ? 12000 : 18000;
+const particleCount = isCompactScreen ? 18000 : 32000;
 const pointer = { x: 0, y: 0 };
 const state = {
   handPresent: false,
@@ -28,10 +28,17 @@ const state = {
   frameLoopRunning: false,
   stream: null
 };
+const zoomState = {
+  current: 164,
+  target: 164,
+  min: 108,
+  max: 220,
+  step: 12
+};
 
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(60, 1, 0.1, 1000);
-camera.position.z = 150;
+camera.position.z = zoomState.current;
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
@@ -79,7 +86,7 @@ const sprite = new THREE.TextureLoader().load(
 );
 
 const material = new THREE.PointsMaterial({
-  size: isCompactScreen ? 0.72 : 0.78,
+  size: isCompactScreen ? 0.62 : 0.68,
   map: sprite,
   alphaTest: 0.24,
   vertexColors: true,
@@ -252,6 +259,38 @@ function babyBreath(cx, cy, radius, color) {
   return { pts, cols };
 }
 
+function fluffyBloom(cx, cy, radius, density, color) {
+  const pts = [];
+  const cols = [];
+
+  for (let index = 0; index < density; index += 1) {
+    const angle = Math.random() * Math.PI * 2;
+    const dist = Math.pow(Math.random(), 0.75) * radius;
+    pts.push({
+      x: cx + Math.cos(angle) * dist + (Math.random() - 0.5) * 0.9,
+      y: cy + Math.sin(angle) * dist + (Math.random() - 0.5) * 0.9
+    });
+    cols.push(color);
+  }
+
+  return { pts, cols };
+}
+
+function fillerSprig(cx, cy, count, spread, color) {
+  const pts = [];
+  const cols = [];
+
+  for (let index = 0; index < count; index += 1) {
+    pts.push({
+      x: cx + (Math.random() - 0.5) * spread,
+      y: cy + (Math.random() - 0.5) * spread
+    });
+    cols.push(color);
+  }
+
+  return { pts, cols };
+}
+
 function bouquetTargets() {
   let pts = [];
   let cols = [];
@@ -269,36 +308,58 @@ function bouquetTargets() {
   const blushRose = new THREE.Color("#f9a8d4");
   const creamRose = new THREE.Color("#ffe4c7");
   const whiteBud = new THREE.Color("#fff6fb");
+  const mauvePink = new THREE.Color("#e9a8c8");
+  const hotPink = new THREE.Color("#ef6a8c");
+  const palePink = new THREE.Color("#ffd9e8");
 
-  add(wrapping(0, -10, 48, 38, paperColor));
-  add(wrapping(0, -16, 40, 28, paperShade));
+  add(wrapping(4, -18, 54, 42, paperColor));
+  add(wrapping(6, -24, 42, 30, paperShade));
 
-  add(stem(-30, 6, 98, stemColor));
-  add(stem(-12, 16, 108, stemColor));
-  add(stem(8, 22, 112, stemColor));
-  add(stem(28, 10, 100, stemColor));
-  add(stem(-50, -2, 84, stemColor));
-  add(stem(48, -4, 82, stemColor));
+  add(stem(-34, 2, 108, stemColor));
+  add(stem(-18, 18, 118, stemColor));
+  add(stem(0, 30, 126, stemColor));
+  add(stem(18, 20, 116, stemColor));
+  add(stem(38, 6, 108, stemColor));
+  add(stem(58, 0, 96, stemColor));
+  add(stem(-56, -4, 92, stemColor));
+  add(stem(-72, -10, 78, stemColor));
 
-  add(leaf(-24, -32, 11, 5, new THREE.Color("#7fb347")));
-  add(leaf(-6, -46, 12, 5.5, new THREE.Color("#6ea93b")));
-  add(leaf(18, -34, 10.5, 4.8, new THREE.Color("#5f9735")));
-  add(leaf(34, -18, 9.5, 4.4, new THREE.Color("#84b84a")));
-  add(leaf(-42, -14, 9, 4.2, new THREE.Color("#7db144")));
-  add(leaf(48, -10, 9, 4.2, new THREE.Color("#7db144")));
+  add(leaf(-26, -38, 12, 5.2, new THREE.Color("#7fb347")));
+  add(leaf(-8, -52, 12.5, 5.8, new THREE.Color("#6ea93b")));
+  add(leaf(16, -42, 11.2, 5, new THREE.Color("#5f9735")));
+  add(leaf(36, -24, 10.2, 4.7, new THREE.Color("#84b84a")));
+  add(leaf(-42, -18, 9.4, 4.5, new THREE.Color("#7db144")));
+  add(leaf(52, -14, 9.2, 4.3, new THREE.Color("#7db144")));
+  add(leaf(-60, 2, 8.6, 4.1, new THREE.Color("#7db144")));
+  add(leaf(62, -2, 8.6, 4.1, new THREE.Color("#7db144")));
 
-  add(roseFlower(-26, 38, 4.9, 2.45, deepRose));
-  add(roseFlower(-2, 54, 5.2, 2.7, softRose));
-  add(roseFlower(24, 40, 4.8, 2.35, blushRose));
-  add(roseFlower(-46, 18, 4.4, 1.95, blushRose));
-  add(roseFlower(46, 16, 4.4, 1.95, creamRose));
-  add(blossomFlower(0, 24, 7, 7.5, creamRose));
-  add(babyBreath(-12, 30, 5.5, whiteBud));
-  add(babyBreath(12, 34, 5.5, whiteBud));
-  add(babyBreath(-38, 26, 4.6, whiteBud));
-  add(babyBreath(36, 24, 4.6, whiteBud));
-  add(miniHeart(0, 18, 1.6, new THREE.Color("#fb8ea4")));
-  add(ribbon(0, -16, 8.8, new THREE.Color("#f08097")));
+  add(fluffyBloom(-50, 26, 15, 320, palePink));
+  add(fluffyBloom(-22, 54, 14, 280, blushRose));
+  add(fluffyBloom(8, 76, 16, 340, palePink));
+  add(fluffyBloom(34, 50, 18, 360, softRose));
+  add(fluffyBloom(60, 32, 14, 280, blushRose));
+
+  add(roseFlower(-18, 18, 5.1, 2.7, hotPink));
+  add(roseFlower(2, 22, 5.4, 2.95, deepRose));
+  add(roseFlower(24, 18, 5, 2.65, softRose));
+  add(roseFlower(-42, 4, 4.6, 2.2, mauvePink));
+  add(roseFlower(46, 8, 4.6, 2.25, creamRose));
+  add(roseFlower(66, 14, 4.2, 1.95, blushRose));
+
+  add(blossomFlower(-68, 44, 5, 8.5, palePink));
+  add(blossomFlower(74, 48, 6, 8.2, blushRose));
+  add(blossomFlower(14, 38, 7, 7.2, creamRose));
+  add(blossomFlower(-6, 94, 6, 8.4, palePink));
+
+  add(babyBreath(-8, 64, 6, whiteBud));
+  add(babyBreath(24, 68, 6, whiteBud));
+  add(babyBreath(-30, 70, 5.2, whiteBud));
+  add(babyBreath(54, 62, 5, whiteBud));
+  add(fillerSprig(-12, 34, 90, 16, whiteBud));
+  add(fillerSprig(44, 26, 80, 14, palePink));
+
+  add(miniHeart(6, 24, 1.4, new THREE.Color("#fb8ea4")));
+  add(ribbon(8, -22, 9.4, new THREE.Color("#f08097")));
 
   return { pts, cols };
 }
@@ -414,7 +475,9 @@ function withTimeout(promise, timeoutMs, message) {
 
 async function startGestureControl() {
   if (state.cameraStarted) {
-    stopGestureControl("Đã tắt camera. Quay lại điều khiển bằng chuột.");
+    stopGestureControl(
+      "Đã tắt camera. Quay lại điều khiển bằng chuột. Rê để xoay, lăn chuột để zoom."
+    );
     return;
   }
 
@@ -517,7 +580,7 @@ async function startGestureControl() {
     startGestureBtn.disabled = false;
     startGestureBtn.textContent = "Tắt camera điều khiển";
     gestureStatus.textContent =
-      "Camera đã bật. Xòe bàn tay để hiện 29/04, khum hoặc nắm tay lại để trở về bó hoa.";
+      "Camera đã bật. Xòe bàn tay để hiện 29/04, khum hoặc nắm tay lại để trở về bó hoa. Vẫn có thể lăn chuột để zoom.";
   } catch (error) {
     console.error(error);
     stopGestureControl();
@@ -585,12 +648,38 @@ stage.addEventListener("pointerleave", () => {
   pointer.y *= 0.2;
 });
 
+stage.addEventListener(
+  "wheel",
+  (event) => {
+    event.preventDefault();
+
+    const direction = event.deltaY > 0 ? 1 : -1;
+    zoomState.target = THREE.MathUtils.clamp(
+      zoomState.target + direction * zoomState.step,
+      zoomState.min,
+      zoomState.max
+    );
+
+    gestureStatus.textContent = `Zoom: ${Math.round(
+      THREE.MathUtils.mapLinear(zoomState.target, zoomState.max, zoomState.min, 100, 160)
+    )}% . Lăn chuột để chỉnh, nhấp đúp để reset.`;
+  },
+  { passive: false }
+);
+
+stage.addEventListener("dblclick", () => {
+  zoomState.target = 164;
+  gestureStatus.textContent = state.cameraStarted
+    ? "Camera đã bật. Xòe bàn tay để hiện 29/04, khum hoặc nắm tay lại để trở về bó hoa."
+    : "Đang ở chế độ chuột. Rê để xoay, lăn chuột để zoom, nhấp đúp để về khung nhìn mặc định.";
+});
+
 let rotationX = 0;
 let rotationY = 0;
 let targetRotationX = 0;
 let targetRotationY = 0;
-let currentCameraZ = 150;
-let targetCameraZ = 150;
+let currentCameraZ = zoomState.current;
+let targetCameraZ = zoomState.target;
 
 function animate() {
   requestAnimationFrame(animate);
@@ -615,11 +704,15 @@ function animate() {
   if (state.handPresent) {
     targetRotationY = state.handX * Math.PI * 0.65;
     targetRotationX = -state.handY * Math.PI * 0.35;
-    targetCameraZ = 150 - (state.pinchScale - 1) * 50;
+    targetCameraZ = THREE.MathUtils.clamp(
+      zoomState.target - (state.pinchScale - 1) * 72,
+      zoomState.min,
+      zoomState.max
+    );
   } else {
     targetRotationY = pointer.x * Math.PI * 0.65;
     targetRotationX = pointer.y * Math.PI * 0.4;
-    targetCameraZ = 150;
+    targetCameraZ = zoomState.target;
   }
 
   rotationX += (targetRotationX - rotationX) * 0.08;
