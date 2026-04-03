@@ -8,7 +8,7 @@ Mo file `script.js` va cap nhat cac truong trong `birthdayConfig`:
 
 - `recipientName`: ten nguoi nhan
 - `fromName`: ten cua ban
-- `birthdayDate`: ngay sinh theo dinh dang `YYYY-MM-DD`
+- `birthdayDate`: ngay sinh theo dinh dang `YYYY-MM-DD`, hien dang la `2026-04-29`
 - `heroLead`, `heroNote`, `storyIntro`, `finalTitle`, `finalCopy`
 - `wishes`, `moments`, `gifts`, `letterTitle`, `letterBody`
 

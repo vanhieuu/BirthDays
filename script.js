@@ -1,7 +1,7 @@
 const birthdayConfig = {
   recipientName: "Em",
   fromName: "Hiếu",
-  birthdayDate: "2026-04-10",
+  birthdayDate: "2026-04-29",
   heroLead:
     "Hôm nay là ngày để mọi điều dễ thương nhất trên đời tìm đến bạn nhiều hơn một chút.",
   heroNote:
@@ -98,13 +98,18 @@ const elementMap = {
   letterModal: document.getElementById("letterModal"),
   openLetterBtn: document.getElementById("openLetterBtn"),
   closeLetterBtn: document.getElementById("closeLetterBtn"),
-  sparkles: document.getElementById("sparkles")
+  sparkles: document.getElementById("sparkles"),
+  surpriseOverlay: document.getElementById("surpriseOverlay"),
+  flowerBurst: document.getElementById("flowerBurst"),
+  surpriseTitle: document.getElementById("surpriseTitle"),
+  surpriseMessage: document.getElementById("surpriseMessage"),
+  closeSurpriseBtn: document.getElementById("closeSurpriseBtn")
 };
 
 function populateContent() {
-  document.title = `Happy Birthday, ${birthdayConfig.recipientName}`;
+  document.title = `Chúc mừng sinh nhật, ${birthdayConfig.recipientName}`;
 
-  elementMap.heroTitle.textContent = `Happy Birthday, ${birthdayConfig.recipientName}`;
+  elementMap.heroTitle.textContent = `Chúc mừng sinh nhật, ${birthdayConfig.recipientName}`;
   elementMap.heroLead.textContent = birthdayConfig.heroLead;
   elementMap.heroNote.textContent = birthdayConfig.heroNote;
   elementMap.storyIntro.textContent = birthdayConfig.storyIntro;
@@ -145,10 +150,42 @@ function populateContent() {
           <p class="gift-secret">${gift.secret}</p>
         </div>
       </div>
-      <button class="gift-toggle" type="button" data-index="${index}">Mo qua</button>
+      <button class="gift-toggle" type="button" data-index="${index}">Mở quà</button>
     `;
     elementMap.giftGrid.appendChild(item);
   });
+}
+
+function createFlowerBurst() {
+  const flowers = ["🌸", "🌷", "🌹", "🌺", "💐", "🌼", "🪻"];
+
+  elementMap.flowerBurst.replaceChildren();
+
+  for (let index = 0; index < 18; index += 1) {
+    const flower = document.createElement("span");
+    flower.className = "burst-flower";
+    flower.textContent = flowers[index % flowers.length];
+    flower.style.left = `${8 + Math.random() * 84}%`;
+    flower.style.top = `${10 + Math.random() * 60}%`;
+    flower.style.animationDelay = `${Math.random() * 180}ms`;
+    flower.style.setProperty("--drift-x", `${-80 + Math.random() * 160}px`);
+    flower.style.setProperty("--drift-y", `${-40 - Math.random() * 140}px`);
+    flower.style.setProperty("--spin", `${-25 + Math.random() * 50}deg`);
+    elementMap.flowerBurst.appendChild(flower);
+  }
+}
+
+function showSurpriseCard(gift) {
+  createFlowerBurst();
+  elementMap.surpriseTitle.textContent = gift.title;
+  elementMap.surpriseMessage.textContent = gift.secret;
+  elementMap.surpriseOverlay.classList.add("is-visible");
+  elementMap.surpriseOverlay.setAttribute("aria-hidden", "false");
+}
+
+function hideSurpriseCard() {
+  elementMap.surpriseOverlay.classList.remove("is-visible");
+  elementMap.surpriseOverlay.setAttribute("aria-hidden", "true");
 }
 
 function getNextBirthday(dateString) {
@@ -242,6 +279,14 @@ function bindEvents() {
     }
   });
 
+  elementMap.closeSurpriseBtn.addEventListener("click", hideSurpriseCard);
+
+  elementMap.surpriseOverlay.addEventListener("click", (event) => {
+    if (event.target === elementMap.surpriseOverlay) {
+      hideSurpriseCard();
+    }
+  });
+
   elementMap.giftGrid.addEventListener("click", (event) => {
     const toggle = event.target.closest(".gift-toggle");
 
@@ -250,8 +295,13 @@ function bindEvents() {
     }
 
     const card = toggle.closest(".gift-card");
+    const giftIndex = Number(toggle.dataset.index);
     const isOpen = card.classList.toggle("is-open");
     toggle.textContent = isOpen ? "Đóng lại" : "Mở quà";
+
+    if (isOpen) {
+      showSurpriseCard(birthdayConfig.gifts[giftIndex]);
+    }
   });
 }
 

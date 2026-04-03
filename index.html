@@ -7,7 +7,7 @@
       name="description"
       content="A birthday microsite filled with wishes, surprises, and a little bit of magic."
     />
-    <title>Happy Birthday</title>
+    <title>Chúc Mừng Sinh Nhật</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -24,8 +24,8 @@
     <main class="page-shell">
       <section class="hero panel">
         <div class="hero-copy">
-          <p class="eyebrow">Birthday Edition</p>
-          <h1 id="heroTitle">Happy Birthday</h1>
+          <p class="eyebrow">Phiên Bản Sinh Nhật</p>
+          <h1 id="heroTitle">Chúc mừng sinh nhật</h1>
           <p class="hero-lead" id="heroLead"></p>
           <p class="hero-note" id="heroNote"></p>
 
@@ -61,20 +61,20 @@
 
       <section class="story-grid">
         <article class="panel story-card accent-card">
-          <p class="eyebrow">Today Is Yours</p>
+          <p class="eyebrow">Ngày Của Bạn</p>
           <h2>Một ngày được dành riêng để yêu thương bạn nhiều hơn bình thường</h2>
           <p id="storyIntro"></p>
         </article>
 
         <article class="panel story-card">
-          <p class="eyebrow">Wish Board</p>
+          <p class="eyebrow">Bảng Lời Chúc</p>
           <div class="wish-list" id="wishList"></div>
         </article>
       </section>
 
       <section class="panel moments-section">
         <div class="section-heading">
-          <p class="eyebrow">What Makes You Special</p>
+          <p class="eyebrow">Điều Làm Bạn Đặc Biệt</p>
           <h2>Những điều tuyệt vời mình muốn giữ lại trong ngày hôm nay</h2>
         </div>
         <div class="moments-grid" id="momentsGrid"></div>
@@ -82,7 +82,7 @@
 
       <section class="panel surprises-section" id="surprises">
         <div class="section-heading">
-          <p class="eyebrow">Open The Gifts</p>
+          <p class="eyebrow">Mở Những Bất Ngờ</p>
           <h2>Bấm vào từng món quà để mở lời chúc ẩn bên trong</h2>
         </div>
         <div class="gift-grid" id="giftGrid"></div>
@@ -90,7 +90,7 @@
 
       <section class="panel finale-section">
         <div class="section-heading">
-          <p class="eyebrow">Final Note</p>
+          <p class="eyebrow">Lời Kết</p>
           <h2 id="finalTitle"></h2>
         </div>
         <p class="final-copy" id="finalCopy"></p>
@@ -102,10 +102,22 @@
         <button class="close-btn" id="closeLetterBtn" aria-label="Đóng thư">
           ×
         </button>
-        <p class="eyebrow">A Letter For You</p>
+        <p class="eyebrow">Lá Thư Dành Riêng</p>
         <h2 id="letterTitle"></h2>
         <div class="letter-body" id="letterBody"></div>
         <p class="letter-signature" id="letterSignature"></p>
+      </div>
+    </div>
+
+    <div class="surprise-overlay" id="surpriseOverlay" aria-hidden="true">
+      <div class="flower-burst" id="flowerBurst"></div>
+      <div class="surprise-card" id="surpriseCard">
+        <button class="close-btn surprise-close" id="closeSurpriseBtn" aria-label="Đóng thiệp">
+          ×
+        </button>
+        <p class="eyebrow">Thiệp Vừa Mở</p>
+        <h2 id="surpriseTitle"></h2>
+        <p class="surprise-message" id="surpriseMessage"></p>
       </div>
     </div>
 
