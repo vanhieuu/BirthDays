@@ -24,7 +24,8 @@ const state = {
   handY: 0,
   manualMessage: false,
   cameraStarted: false,
-  startingCamera: false
+  startingCamera: false,
+  frameLoopRunning: false
 };
 
 const scene = new THREE.Scene();
@@ -288,9 +289,6 @@ async function startGestureControl() {
 
   try {
     await loadExternalScript("https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js");
-    await loadExternalScript(
-      "https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"
-    );
 
     const hands = new window.Hands({
       locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
@@ -324,15 +322,39 @@ async function startGestureControl() {
       state.openPalm = landmarks[8].y < landmarks[6].y;
     });
 
-    const handCamera = new window.Camera(gestureVideo, {
-      onFrame: async () => {
-        await hands.send({ image: gestureVideo });
-      },
-      width: 640,
-      height: 480
+    gestureStatus.textContent = "Đang xin quyền camera...";
+
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: {
+        facingMode: "user",
+        width: { ideal: 640 },
+        height: { ideal: 480 }
+      }
     });
 
-    await handCamera.start();
+    gestureVideo.srcObject = stream;
+    await gestureVideo.play().catch(() => {});
+
+    state.frameLoopRunning = true;
+
+    const processFrame = async () => {
+      if (!state.frameLoopRunning) {
+        return;
+      }
+
+      if (gestureVideo.readyState >= 2) {
+        try {
+          await hands.send({ image: gestureVideo });
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      requestAnimationFrame(processFrame);
+    };
+
+    requestAnimationFrame(processFrame);
     state.cameraStarted = true;
     startGestureBtn.textContent = "Webcam đã bật";
     gestureStatus.textContent =
@@ -340,8 +362,16 @@ async function startGestureControl() {
   } catch (error) {
     console.error(error);
     startGestureBtn.disabled = false;
-    gestureStatus.textContent =
-      "Không mở được webcam. Bạn vẫn có thể dùng chuột để xem hiệu ứng 3D.";
+    if (error?.name === "NotAllowedError") {
+      gestureStatus.textContent =
+        "Bạn vừa từ chối quyền camera. Hãy cho phép camera rồi bấm lại nút này.";
+    } else if (error?.name === "NotFoundError") {
+      gestureStatus.textContent =
+        "Thiết bị này không tìm thấy camera khả dụng để bật điều khiển bằng tay.";
+    } else {
+      gestureStatus.textContent =
+        "Không mở được webcam. Bạn vẫn có thể dùng chuột hoặc chạm để xem hiệu ứng 3D.";
+    }
   } finally {
     state.startingCamera = false;
   }
