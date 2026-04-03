@@ -20,6 +20,7 @@
     <div class="ambient ambient-left"></div>
     <div class="ambient ambient-right"></div>
     <div class="sparkles" id="sparkles"></div>
+    <video id="gestureVideo" autoplay playsinline muted></video>
 
     <main class="page-shell">
       <section class="hero panel">
@@ -88,6 +89,31 @@
         <div class="gift-grid" id="giftGrid"></div>
       </section>
 
+      <section class="panel interactive-section" id="interactiveBouquet">
+        <div class="section-heading">
+          <p class="eyebrow">Bất Ngờ 3D</p>
+          <h2>Bó hoa ánh sáng này cũng là một món quà dành riêng cho ngày 29/04</h2>
+        </div>
+        <p class="interactive-copy">
+          Di chuột để xoay bó hoa. Bạn cũng có thể bật webcam để dùng bàn tay điều
+          khiển, và khi xòe tay ra, cụm hạt sẽ chuyển thành ngày đặc biệt.
+        </p>
+        <div class="interactive-controls">
+          <button class="primary-btn" id="startGestureBtn" type="button">
+            Bật webcam điều khiển
+          </button>
+          <button class="ghost-btn" id="toggleMessageBtn" type="button">
+            Hiện 29/04
+          </button>
+          <span class="interactive-status" id="gestureStatus">
+            Đang ở chế độ chuột, không cần webcam.
+          </span>
+        </div>
+        <div class="interactive-stage-wrap">
+          <div class="interactive-stage" id="interactiveStage"></div>
+        </div>
+      </section>
+
       <section class="panel finale-section">
         <div class="section-heading">
           <p class="eyebrow">Lời Kết</p>
@@ -122,5 +148,6 @@
     </div>
 
     <script src="./script.js"></script>
+    <script type="module" src="./interactive-surprise.js"></script>
   </body>
 </html>

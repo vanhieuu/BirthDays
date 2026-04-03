@@ -36,6 +36,14 @@ a {
   font: inherit;
 }
 
+#gestureVideo {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
 .ambient {
   position: fixed;
   width: 26rem;
@@ -267,6 +275,7 @@ h2 {
 
 .moments-section,
 .surprises-section,
+.interactive-section,
 .finale-section {
   margin-top: 1.25rem;
 }
@@ -361,6 +370,63 @@ h2 {
   background: rgba(232, 111, 81, 0.12);
   color: var(--accent);
   font-weight: 700;
+}
+
+.interactive-copy {
+  margin: 0.9rem 0 0;
+  max-width: 62ch;
+  color: var(--muted);
+  line-height: 1.8;
+}
+
+.interactive-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.85rem;
+  margin-top: 1.4rem;
+}
+
+.interactive-status {
+  color: var(--muted);
+  font-size: 0.96rem;
+}
+
+.interactive-stage-wrap {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at top, rgba(255, 214, 175, 0.22), transparent 45%),
+    rgba(255, 255, 255, 0.46);
+  border: 1px solid rgba(232, 111, 81, 0.12);
+}
+
+.interactive-stage {
+  position: relative;
+  min-height: 480px;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top, rgba(255, 232, 203, 0.38), transparent 40%),
+    linear-gradient(180deg, rgba(74, 37, 27, 0.92), rgba(33, 19, 13, 0.96));
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.interactive-stage canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.interactive-stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.14), transparent 22%),
+    radial-gradient(circle at 80% 28%, rgba(255, 202, 141, 0.18), transparent 25%);
+  pointer-events: none;
 }
 
 .final-copy {
@@ -543,6 +609,10 @@ h2 {
   .gift-card {
     min-height: auto;
   }
+
+  .interactive-stage {
+    min-height: 400px;
+  }
 }
 
 @media (max-width: 680px) {
@@ -556,6 +626,7 @@ h2 {
   .story-card,
   .moments-section,
   .surprises-section,
+  .interactive-section,
   .finale-section {
     padding: 1.25rem;
   }
@@ -570,5 +641,9 @@ h2 {
 
   .surprise-card {
     padding: 1.25rem;
+  }
+
+  .interactive-stage {
+    min-height: 340px;
   }
 }
