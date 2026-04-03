@@ -59,12 +59,10 @@ const positions = new Float32Array(particleCount * 3);
 const colors = new Float32Array(particleCount * 3);
 
 const palette = [
-  new THREE.Color("#ffd1dc"),
-  new THREE.Color("#f9a8d4"),
-  new THREE.Color("#fb7185"),
-  new THREE.Color("#fbcfe8"),
-  new THREE.Color("#fecdd3"),
-  new THREE.Color("#fde7d7")
+  new THREE.Color("#c84b6f"),
+  new THREE.Color("#df8aa5"),
+  new THREE.Color("#f1ddce"),
+  new THREE.Color("#fff8f4")
 ];
 
 for (let index = 0; index < particleCount; index += 1) {
@@ -300,17 +298,14 @@ function bouquetTargets() {
     cols = cols.concat(shape.cols);
   }
 
-  const stemColor = new THREE.Color("#5a8f31");
-  const paperColor = new THREE.Color("#f6dcc7");
-  const paperShade = new THREE.Color("#efc4a6");
-  const deepRose = new THREE.Color("#e85d75");
-  const softRose = new THREE.Color("#f472b6");
-  const blushRose = new THREE.Color("#f9a8d4");
-  const creamRose = new THREE.Color("#ffe4c7");
-  const whiteBud = new THREE.Color("#fff6fb");
-  const mauvePink = new THREE.Color("#e9a8c8");
-  const hotPink = new THREE.Color("#ef6a8c");
-  const palePink = new THREE.Color("#ffd9e8");
+  const stemColor = new THREE.Color("#5d873f");
+  const paperColor = new THREE.Color("#f3dfd0");
+  const paperShade = new THREE.Color("#e7c7b3");
+  const burgundyRose = new THREE.Color("#b73f63");
+  const velvetRose = new THREE.Color("#d05e82");
+  const blushRose = new THREE.Color("#de9ab0");
+  const creamRose = new THREE.Color("#f2dfd0");
+  const ivoryBud = new THREE.Color("#fff8f4");
 
   add(wrapping(4, -18, 54, 42, paperColor));
   add(wrapping(6, -24, 42, 30, paperShade));
@@ -324,42 +319,42 @@ function bouquetTargets() {
   add(stem(-56, -4, 92, stemColor));
   add(stem(-72, -10, 78, stemColor));
 
-  add(leaf(-26, -38, 12, 5.2, new THREE.Color("#7fb347")));
-  add(leaf(-8, -52, 12.5, 5.8, new THREE.Color("#6ea93b")));
-  add(leaf(16, -42, 11.2, 5, new THREE.Color("#5f9735")));
-  add(leaf(36, -24, 10.2, 4.7, new THREE.Color("#84b84a")));
-  add(leaf(-42, -18, 9.4, 4.5, new THREE.Color("#7db144")));
-  add(leaf(52, -14, 9.2, 4.3, new THREE.Color("#7db144")));
-  add(leaf(-60, 2, 8.6, 4.1, new THREE.Color("#7db144")));
-  add(leaf(62, -2, 8.6, 4.1, new THREE.Color("#7db144")));
+  add(leaf(-26, -38, 12, 5.2, new THREE.Color("#739848")));
+  add(leaf(-8, -52, 12.5, 5.8, new THREE.Color("#678c3f")));
+  add(leaf(16, -42, 11.2, 5, new THREE.Color("#5d833b")));
+  add(leaf(36, -24, 10.2, 4.7, new THREE.Color("#7a9f4e")));
+  add(leaf(-42, -18, 9.4, 4.5, new THREE.Color("#709447")));
+  add(leaf(52, -14, 9.2, 4.3, new THREE.Color("#709447")));
+  add(leaf(-60, 2, 8.6, 4.1, new THREE.Color("#709447")));
+  add(leaf(62, -2, 8.6, 4.1, new THREE.Color("#709447")));
 
-  add(fluffyBloom(-50, 26, 15, 320, palePink));
+  add(fluffyBloom(-50, 26, 15, 320, creamRose));
   add(fluffyBloom(-22, 54, 14, 280, blushRose));
-  add(fluffyBloom(8, 76, 16, 340, palePink));
-  add(fluffyBloom(34, 50, 18, 360, softRose));
+  add(fluffyBloom(8, 76, 16, 340, ivoryBud));
+  add(fluffyBloom(34, 50, 18, 360, creamRose));
   add(fluffyBloom(60, 32, 14, 280, blushRose));
 
-  add(roseFlower(-18, 18, 5.1, 2.7, hotPink));
-  add(roseFlower(2, 22, 5.4, 2.95, deepRose));
-  add(roseFlower(24, 18, 5, 2.65, softRose));
-  add(roseFlower(-42, 4, 4.6, 2.2, mauvePink));
+  add(roseFlower(-18, 18, 5.1, 2.7, velvetRose));
+  add(roseFlower(2, 22, 5.4, 2.95, burgundyRose));
+  add(roseFlower(24, 18, 5, 2.65, velvetRose));
+  add(roseFlower(-42, 4, 4.6, 2.2, blushRose));
   add(roseFlower(46, 8, 4.6, 2.25, creamRose));
-  add(roseFlower(66, 14, 4.2, 1.95, blushRose));
+  add(roseFlower(66, 14, 4.2, 1.95, creamRose));
 
-  add(blossomFlower(-68, 44, 5, 8.5, palePink));
+  add(blossomFlower(-68, 44, 5, 8.5, creamRose));
   add(blossomFlower(74, 48, 6, 8.2, blushRose));
   add(blossomFlower(14, 38, 7, 7.2, creamRose));
-  add(blossomFlower(-6, 94, 6, 8.4, palePink));
+  add(blossomFlower(-6, 94, 6, 8.4, ivoryBud));
 
-  add(babyBreath(-8, 64, 6, whiteBud));
-  add(babyBreath(24, 68, 6, whiteBud));
-  add(babyBreath(-30, 70, 5.2, whiteBud));
-  add(babyBreath(54, 62, 5, whiteBud));
-  add(fillerSprig(-12, 34, 90, 16, whiteBud));
-  add(fillerSprig(44, 26, 80, 14, palePink));
+  add(babyBreath(-8, 64, 6, ivoryBud));
+  add(babyBreath(24, 68, 6, ivoryBud));
+  add(babyBreath(-30, 70, 5.2, ivoryBud));
+  add(babyBreath(54, 62, 5, ivoryBud));
+  add(fillerSprig(-12, 34, 90, 16, ivoryBud));
+  add(fillerSprig(44, 26, 80, 14, creamRose));
 
-  add(miniHeart(6, 24, 1.4, new THREE.Color("#fb8ea4")));
-  add(ribbon(8, -22, 9.4, new THREE.Color("#f08097")));
+  add(miniHeart(6, 24, 1.4, new THREE.Color("#d97592")));
+  add(ribbon(8, -22, 9.4, new THREE.Color("#ce6d8a")));
 
   return { pts, cols };
 }
