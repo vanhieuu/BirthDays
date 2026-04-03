@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A birthday microsite filled with wishes, surprises, and a little bit of magic."
+    />
+    <title>Happy Birthday</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-left"></div>
+    <div class="ambient ambient-right"></div>
+    <div class="sparkles" id="sparkles"></div>
+
+    <main class="page-shell">
+      <section class="hero panel">
+        <div class="hero-copy">
+          <p class="eyebrow">Birthday Edition</p>
+          <h1 id="heroTitle">Happy Birthday</h1>
+          <p class="hero-lead" id="heroLead"></p>
+          <p class="hero-note" id="heroNote"></p>
+
+          <div class="hero-actions">
+            <button class="primary-btn" id="openLetterBtn">Mở thư tay</button>
+            <a class="ghost-btn" href="#surprises">Xem bất ngờ</a>
+          </div>
+        </div>
+
+        <div class="hero-card">
+          <div class="countdown-label">Đếm ngược đến sinh nhật tiếp theo</div>
+          <div class="countdown-grid">
+            <article class="countdown-item">
+              <span id="daysValue">00</span>
+              <small>Ngày</small>
+            </article>
+            <article class="countdown-item">
+              <span id="hoursValue">00</span>
+              <small>Giờ</small>
+            </article>
+            <article class="countdown-item">
+              <span id="minutesValue">00</span>
+              <small>Phút</small>
+            </article>
+            <article class="countdown-item">
+              <span id="secondsValue">00</span>
+              <small>Giây</small>
+            </article>
+          </div>
+          <p class="countdown-footnote" id="countdownMessage"></p>
+        </div>
+      </section>
+
+      <section class="story-grid">
+        <article class="panel story-card accent-card">
+          <p class="eyebrow">Today Is Yours</p>
+          <h2>Một ngày được dành riêng để yêu thương bạn nhiều hơn bình thường</h2>
+          <p id="storyIntro"></p>
+        </article>
+
+        <article class="panel story-card">
+          <p class="eyebrow">Wish Board</p>
+          <div class="wish-list" id="wishList"></div>
+        </article>
+      </section>
+
+      <section class="panel moments-section">
+        <div class="section-heading">
+          <p class="eyebrow">What Makes You Special</p>
+          <h2>Những điều tuyệt vời mình muốn giữ lại trong ngày hôm nay</h2>
+        </div>
+        <div class="moments-grid" id="momentsGrid"></div>
+      </section>
+
+      <section class="panel surprises-section" id="surprises">
+        <div class="section-heading">
+          <p class="eyebrow">Open The Gifts</p>
+          <h2>Bấm vào từng món quà để mở lời chúc ẩn bên trong</h2>
+        </div>
+        <div class="gift-grid" id="giftGrid"></div>
+      </section>
+
+      <section class="panel finale-section">
+        <div class="section-heading">
+          <p class="eyebrow">Final Note</p>
+          <h2 id="finalTitle"></h2>
+        </div>
+        <p class="final-copy" id="finalCopy"></p>
+      </section>
+    </main>
+
+    <div class="letter-modal" id="letterModal" aria-hidden="true">
+      <div class="letter-sheet">
+        <button class="close-btn" id="closeLetterBtn" aria-label="Đóng thư">
+          ×
+        </button>
+        <p class="eyebrow">A Letter For You</p>
+        <h2 id="letterTitle"></h2>
+        <div class="letter-body" id="letterBody"></div>
+        <p class="letter-signature" id="letterSignature"></p>
+      </div>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
