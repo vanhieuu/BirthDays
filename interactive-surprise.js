@@ -52,12 +52,12 @@ const positions = new Float32Array(particleCount * 3);
 const colors = new Float32Array(particleCount * 3);
 
 const palette = [
-  new THREE.Color("#ffc4d6"),
-  new THREE.Color("#ffd79f"),
-  new THREE.Color("#c4b5fd"),
-  new THREE.Color("#86efac"),
-  new THREE.Color("#93c5fd"),
-  new THREE.Color("#f9a8d4")
+  new THREE.Color("#ffd1dc"),
+  new THREE.Color("#f9a8d4"),
+  new THREE.Color("#fb7185"),
+  new THREE.Color("#fbcfe8"),
+  new THREE.Color("#fecdd3"),
+  new THREE.Color("#fde7d7")
 ];
 
 for (let index = 0; index < particleCount; index += 1) {
@@ -235,6 +235,23 @@ function wrapping(cx, cy, width, height, color) {
   return { pts, cols };
 }
 
+function babyBreath(cx, cy, radius, color) {
+  const pts = [];
+  const cols = [];
+
+  for (let angle = 0; angle < Math.PI * 2; angle += 0.22) {
+    for (let depth = 0; depth < 2; depth += 1) {
+      pts.push({
+        x: cx + Math.cos(angle) * radius + (Math.random() - 0.5) * 0.45,
+        y: cy + Math.sin(angle) * radius + (Math.random() - 0.5) * 0.45
+      });
+      cols.push(color);
+    }
+  }
+
+  return { pts, cols };
+}
+
 function bouquetTargets() {
   let pts = [];
   let cols = [];
@@ -244,30 +261,44 @@ function bouquetTargets() {
     cols = cols.concat(shape.cols);
   }
 
-  const stemColor = new THREE.Color("#65a30d");
-  const paperColor = new THREE.Color("#f5d0a9");
+  const stemColor = new THREE.Color("#5a8f31");
+  const paperColor = new THREE.Color("#f6dcc7");
+  const paperShade = new THREE.Color("#efc4a6");
+  const deepRose = new THREE.Color("#e85d75");
+  const softRose = new THREE.Color("#f472b6");
+  const blushRose = new THREE.Color("#f9a8d4");
+  const creamRose = new THREE.Color("#ffe4c7");
+  const whiteBud = new THREE.Color("#fff6fb");
 
-  add(wrapping(0, -8, 40, 34, paperColor));
-  add(stem(-24, 10, 88, stemColor));
-  add(stem(0, 18, 98, stemColor));
-  add(stem(26, 12, 92, stemColor));
-  add(stem(-46, 4, 78, stemColor));
-  add(stem(48, 2, 74, stemColor));
+  add(wrapping(0, -10, 48, 38, paperColor));
+  add(wrapping(0, -16, 40, 28, paperShade));
 
-  add(leaf(-18, -30, 10, 4.8, new THREE.Color("#84cc16")));
-  add(leaf(10, -44, 11, 5.2, new THREE.Color("#4ade80")));
-  add(leaf(28, -24, 9.5, 4.5, new THREE.Color("#65a30d")));
-  add(leaf(-38, -10, 9, 4.2, new THREE.Color("#84cc16")));
-  add(leaf(42, -6, 9, 4.2, new THREE.Color("#84cc16")));
+  add(stem(-30, 6, 98, stemColor));
+  add(stem(-12, 16, 108, stemColor));
+  add(stem(8, 22, 112, stemColor));
+  add(stem(28, 10, 100, stemColor));
+  add(stem(-50, -2, 84, stemColor));
+  add(stem(48, -4, 82, stemColor));
 
-  add(roseFlower(-22, 40, 4.6, 2.15, new THREE.Color("#fb7185")));
-  add(roseFlower(4, 52, 4.9, 2.35, new THREE.Color("#f472b6")));
-  add(roseFlower(28, 38, 4.6, 2.1, new THREE.Color("#f9a8d4")));
-  add(blossomFlower(-46, 18, 5, 8.5, new THREE.Color("#c4b5fd")));
-  add(blossomFlower(50, 16, 6, 8, new THREE.Color("#93c5fd")));
-  add(blossomFlower(0, 24, 7, 6.8, new THREE.Color("#fde68a")));
-  add(miniHeart(6, 22, 1.8, new THREE.Color("#fb7185")));
-  add(ribbon(0, -14, 8, new THREE.Color("#fb7185")));
+  add(leaf(-24, -32, 11, 5, new THREE.Color("#7fb347")));
+  add(leaf(-6, -46, 12, 5.5, new THREE.Color("#6ea93b")));
+  add(leaf(18, -34, 10.5, 4.8, new THREE.Color("#5f9735")));
+  add(leaf(34, -18, 9.5, 4.4, new THREE.Color("#84b84a")));
+  add(leaf(-42, -14, 9, 4.2, new THREE.Color("#7db144")));
+  add(leaf(48, -10, 9, 4.2, new THREE.Color("#7db144")));
+
+  add(roseFlower(-26, 38, 4.9, 2.45, deepRose));
+  add(roseFlower(-2, 54, 5.2, 2.7, softRose));
+  add(roseFlower(24, 40, 4.8, 2.35, blushRose));
+  add(roseFlower(-46, 18, 4.4, 1.95, blushRose));
+  add(roseFlower(46, 16, 4.4, 1.95, creamRose));
+  add(blossomFlower(0, 24, 7, 7.5, creamRose));
+  add(babyBreath(-12, 30, 5.5, whiteBud));
+  add(babyBreath(12, 34, 5.5, whiteBud));
+  add(babyBreath(-38, 26, 4.6, whiteBud));
+  add(babyBreath(36, 24, 4.6, whiteBud));
+  add(miniHeart(0, 18, 1.6, new THREE.Color("#fb8ea4")));
+  add(ribbon(0, -16, 8.8, new THREE.Color("#f08097")));
 
   return { pts, cols };
 }
