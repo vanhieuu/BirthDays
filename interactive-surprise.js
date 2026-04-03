@@ -35,7 +35,8 @@ const state = {
   manualMessage: false,
   cameraStarted: false,
   startingCamera: false,
-  frameLoopRunning: false
+  frameLoopRunning: false,
+  stream: null
 };
 
 const scene = new THREE.Scene();
@@ -318,6 +319,24 @@ async function startGestureControl() {
   cameraPlaceholder.textContent = "Đang chuẩn bị camera...";
 
   try {
+    gestureStatus.textContent = "Đang xin quyền camera...";
+    cameraPlaceholder.textContent = "Trình duyệt sắp hỏi quyền camera...";
+
+    const stream = await navigator.mediaDevices.getUserMedia({
+      audio: false,
+      video: {
+        facingMode: "user",
+        width: { ideal: 640 },
+        height: { ideal: 480 }
+      }
+    });
+
+    state.stream = stream;
+    gestureVideo.srcObject = stream;
+    await gestureVideo.play().catch(() => {});
+    cameraPreview.classList.add("is-active");
+    cameraPlaceholder.textContent = "Camera đã bật. Đang tải nhận diện bàn tay...";
+
     await withTimeout(
       loadExternalScript("https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"),
       10000,
@@ -356,21 +375,6 @@ async function startGestureControl() {
       state.openPalm = landmarks[8].y < landmarks[6].y;
     });
 
-    gestureStatus.textContent = "Đang xin quyền camera...";
-
-    const stream = await navigator.mediaDevices.getUserMedia({
-      audio: false,
-      video: {
-        facingMode: "user",
-        width: { ideal: 640 },
-        height: { ideal: 480 }
-      }
-    });
-
-    gestureVideo.srcObject = stream;
-    await gestureVideo.play().catch(() => {});
-    cameraPreview.classList.add("is-active");
-
     state.frameLoopRunning = true;
 
     const processFrame = async () => {
@@ -398,6 +402,11 @@ async function startGestureControl() {
     console.error(error);
     startGestureBtn.disabled = false;
     startGestureBtn.textContent = "Bật webcam điều khiển";
+    if (state.stream) {
+      state.stream.getTracks().forEach((track) => track.stop());
+      state.stream = null;
+    }
+    gestureVideo.srcObject = null;
     cameraPreview.classList.remove("is-active");
     if (error?.name === "NotAllowedError") {
       gestureStatus.textContent =
