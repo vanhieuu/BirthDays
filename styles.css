@@ -36,14 +36,6 @@ a {
   font: inherit;
 }
 
-#gestureVideo {
-  position: fixed;
-  width: 1px;
-  height: 1px;
-  opacity: 0;
-  pointer-events: none;
-}
-
 .ambient {
   position: fixed;
   width: 26rem;
@@ -401,18 +393,82 @@ h2 {
   line-height: 1.8;
 }
 
+.interactive-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(280px, 0.75fr);
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.interactive-copy-block {
+  min-width: 0;
+}
+
+.interactive-section .section-heading {
+  max-width: 44rem;
+}
+
+.interactive-section .section-heading h2 {
+  max-width: 16ch;
+}
+
 .interactive-controls {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   gap: 0.85rem;
-  margin-top: 1.4rem;
+  margin-top: 1.2rem;
 }
 
 .interactive-status {
+  display: block;
+  margin-top: 0.85rem;
   color: var(--muted);
   font-size: 0.96rem;
   min-height: 1.5rem;
+}
+
+.camera-preview {
+  position: relative;
+  min-height: 220px;
+  border-radius: 24px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top, rgba(255, 214, 175, 0.22), transparent 45%),
+    linear-gradient(180deg, rgba(86, 49, 36, 0.92), rgba(38, 25, 20, 0.98));
+  border: 1px solid rgba(232, 111, 81, 0.14);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+}
+
+.camera-preview video {
+  display: none;
+  width: 100%;
+  height: 100%;
+  min-height: 220px;
+  object-fit: cover;
+  transform: scaleX(-1);
+}
+
+.camera-preview.is-active video {
+  display: block;
+}
+
+.camera-placeholder {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  text-align: center;
+  color: rgba(255, 241, 230, 0.88);
+  line-height: 1.7;
+  background:
+    radial-gradient(circle at top, rgba(255, 255, 255, 0.08), transparent 36%),
+    linear-gradient(180deg, rgba(74, 37, 27, 0.2), rgba(33, 19, 13, 0.12));
+}
+
+.camera-preview.is-active .camera-placeholder {
+  display: none;
 }
 
 .interactive-stage-wrap {
@@ -629,12 +685,20 @@ h2 {
     grid-template-columns: 1fr;
   }
 
+  .interactive-top {
+    grid-template-columns: 1fr;
+  }
+
   .gift-card {
     min-height: auto;
   }
 
   .interactive-stage {
     min-height: 400px;
+  }
+
+  .camera-preview {
+    min-height: 200px;
   }
 }
 
@@ -675,5 +739,9 @@ h2 {
 
   .interactive-stage {
     min-height: 340px;
+  }
+
+  .interactive-section .section-heading h2 {
+    max-width: 100%;
   }
 }

@@ -8,8 +8,18 @@ const startGestureBtn = document.getElementById("startGestureBtn");
 const toggleMessageBtn = document.getElementById("toggleMessageBtn");
 const gestureStatus = document.getElementById("gestureStatus");
 const gestureVideo = document.getElementById("gestureVideo");
+const cameraPreview = document.getElementById("cameraPreview");
+const cameraPlaceholder = document.getElementById("cameraPlaceholder");
 
-if (!stage || !startGestureBtn || !toggleMessageBtn || !gestureStatus || !gestureVideo) {
+if (
+  !stage ||
+  !startGestureBtn ||
+  !toggleMessageBtn ||
+  !gestureStatus ||
+  !gestureVideo ||
+  !cameraPreview ||
+  !cameraPlaceholder
+) {
   throw new Error("Interactive birthday scene is missing required DOM nodes.");
 }
 
@@ -247,13 +257,20 @@ resizeScene();
 
 function loadExternalScript(src) {
   return new Promise((resolve, reject) => {
+    if (src.includes("hands.js") && window.Hands) {
+      resolve();
+      return;
+    }
+
     const existing = document.querySelector(`script[src="${src}"]`);
     if (existing) {
-      existing.addEventListener("load", resolve, { once: true });
-      existing.addEventListener("error", reject, { once: true });
       if (existing.dataset.loaded === "true") {
         resolve();
+        return;
       }
+
+      existing.addEventListener("load", resolve, { once: true });
+      existing.addEventListener("error", reject, { once: true });
       return;
     }
 
@@ -273,6 +290,17 @@ function loadExternalScript(src) {
   });
 }
 
+function withTimeout(promise, timeoutMs, message) {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => {
+      window.setTimeout(() => {
+        reject(new Error(message));
+      }, timeoutMs);
+    })
+  ]);
+}
+
 async function startGestureControl() {
   if (state.cameraStarted || state.startingCamera) {
     return;
@@ -285,10 +313,16 @@ async function startGestureControl() {
 
   state.startingCamera = true;
   startGestureBtn.disabled = true;
+  startGestureBtn.textContent = "Đang bật camera...";
   gestureStatus.textContent = "Đang tải chế độ điều khiển bằng tay...";
+  cameraPlaceholder.textContent = "Đang chuẩn bị camera...";
 
   try {
-    await loadExternalScript("https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js");
+    await withTimeout(
+      loadExternalScript("https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"),
+      10000,
+      "Tải thư viện nhận diện tay quá lâu."
+    );
 
     const hands = new window.Hands({
       locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
@@ -335,6 +369,7 @@ async function startGestureControl() {
 
     gestureVideo.srcObject = stream;
     await gestureVideo.play().catch(() => {});
+    cameraPreview.classList.add("is-active");
 
     state.frameLoopRunning = true;
 
@@ -362,15 +397,24 @@ async function startGestureControl() {
   } catch (error) {
     console.error(error);
     startGestureBtn.disabled = false;
+    startGestureBtn.textContent = "Bật webcam điều khiển";
+    cameraPreview.classList.remove("is-active");
     if (error?.name === "NotAllowedError") {
       gestureStatus.textContent =
         "Bạn vừa từ chối quyền camera. Hãy cho phép camera rồi bấm lại nút này.";
+      cameraPlaceholder.textContent = "Camera đang bị chặn. Hãy cho phép quyền truy cập rồi thử lại.";
     } else if (error?.name === "NotFoundError") {
       gestureStatus.textContent =
         "Thiết bị này không tìm thấy camera khả dụng để bật điều khiển bằng tay.";
+      cameraPlaceholder.textContent = "Không tìm thấy camera khả dụng trên thiết bị này.";
+    } else if (error?.message === "Tải thư viện nhận diện tay quá lâu.") {
+      gestureStatus.textContent =
+        "Trình duyệt tải hand-tracking quá lâu. Hãy thử tải lại trang rồi bấm lại.";
+      cameraPlaceholder.textContent = "Không tải kịp thư viện hand-tracking. Hãy refresh trang rồi thử lại.";
     } else {
       gestureStatus.textContent =
         "Không mở được webcam. Bạn vẫn có thể dùng chuột hoặc chạm để xem hiệu ứng 3D.";
+      cameraPlaceholder.textContent = "Chưa bật được camera. Bạn vẫn có thể xem hiệu ứng bằng chuột hoặc chạm.";
     }
   } finally {
     state.startingCamera = false;
