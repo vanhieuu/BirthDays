@@ -393,7 +393,7 @@ function textTargets(text) {
 }
 
 const bouquet = bouquetTargets();
-const dayMessage = textTargets("29/04");
+const dayMessage = textTargets("HPBD");
 
 for (let index = 0; index < particleCount; index += 1) {
   const color = bouquet.cols[index % bouquet.cols.length];
@@ -580,7 +580,7 @@ async function startGestureControl() {
     startGestureBtn.disabled = false;
     startGestureBtn.textContent = "Tắt camera điều khiển";
     gestureStatus.textContent =
-      "Camera đã bật. Xòe bàn tay để hiện 29/04, khum hoặc nắm tay lại để trở về bó hoa. Vẫn có thể lăn chuột để zoom.";
+      "Camera đã bật. Xòe bàn tay để hiện HPBD, khum hoặc nắm tay lại để trở về bó hoa. Vẫn có thể lăn chuột để zoom.";
   } catch (error) {
     console.error(error);
     stopGestureControl();
@@ -626,7 +626,7 @@ startGestureBtn.addEventListener("click", startGestureControl);
 
 toggleMessageBtn.addEventListener("click", () => {
   state.manualMessage = !state.manualMessage;
-  toggleMessageBtn.textContent = state.manualMessage ? "Hiện bó hoa" : "Hiện 29/04";
+  toggleMessageBtn.textContent = state.manualMessage ? "Hiện bó hoa" : "Hiện HPBD";
 });
 
 stage.addEventListener("pointermove", (event) => {
@@ -670,7 +670,7 @@ stage.addEventListener(
 stage.addEventListener("dblclick", () => {
   zoomState.target = 164;
   gestureStatus.textContent = state.cameraStarted
-    ? "Camera đã bật. Xòe bàn tay để hiện 29/04, khum hoặc nắm tay lại để trở về bó hoa."
+    ? "Camera đã bật. Xòe bàn tay để hiện HPBD, khum hoặc nắm tay lại để trở về bó hoa."
     : "Đang ở chế độ chuột. Rê để xoay, lăn chuột để zoom, nhấp đúp để về khung nhìn mặc định.";
 });
 
