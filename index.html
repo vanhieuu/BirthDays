@@ -103,26 +103,20 @@
               <h2>Bó hoa ánh sáng này cũng là một món quà dành riêng cho ngày 29/04</h2>
             </div>
             <p class="interactive-copy">
-              Di chuột để xoay bó hoa. Bạn cũng có thể bật webcam để dùng bàn tay điều
+              Di chuột để xoay bó hoa. Bạn cũng có thể bật camera để dùng bàn tay điều
               khiển, và khi xòe tay ra, cụm hạt sẽ chuyển thành ngày đặc biệt.
             </p>
             <div class="interactive-controls">
               <button class="primary-btn" id="startGestureBtn" type="button">
-                Bật webcam điều khiển
+                Bật camera điều khiển
               </button>
               <button class="ghost-btn" id="toggleMessageBtn" type="button">
                 Hiện 29/04
               </button>
             </div>
             <span class="interactive-status" id="gestureStatus">
-              Đang ở chế độ chuột, không cần webcam.
+              Đang ở chế độ chuột, không cần camera.
             </span>
-          </div>
-          <div class="camera-preview" id="cameraPreview">
-            <video id="gestureVideo" autoplay playsinline muted></video>
-            <div class="camera-placeholder" id="cameraPlaceholder">
-              Preview camera sẽ hiện ở đây khi bật điều khiển.
-            </div>
           </div>
         </div>
         <div class="interactive-stage-wrap">
@@ -164,6 +158,7 @@
     </div>
 
     <script src="./script.js"></script>
+    <video id="gestureVideo" autoplay playsinline muted hidden></video>
     <script type="module" src="./interactive-surprise.js"></script>
   </body>
 </html>

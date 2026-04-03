@@ -8,18 +8,8 @@ const startGestureBtn = document.getElementById("startGestureBtn");
 const toggleMessageBtn = document.getElementById("toggleMessageBtn");
 const gestureStatus = document.getElementById("gestureStatus");
 const gestureVideo = document.getElementById("gestureVideo");
-const cameraPreview = document.getElementById("cameraPreview");
-const cameraPlaceholder = document.getElementById("cameraPlaceholder");
 
-if (
-  !stage ||
-  !startGestureBtn ||
-  !toggleMessageBtn ||
-  !gestureStatus ||
-  !gestureVideo ||
-  !cameraPreview ||
-  !cameraPlaceholder
-) {
+if (!stage || !startGestureBtn || !toggleMessageBtn || !gestureStatus || !gestureVideo) {
   throw new Error("Interactive birthday scene is missing required DOM nodes.");
 }
 
@@ -102,18 +92,41 @@ const material = new THREE.PointsMaterial({
 const points = new THREE.Points(geometry, material);
 scene.add(points);
 
-function singleFlower(cx, cy, petals, radius, color) {
+function blossomFlower(cx, cy, petals, radius, color) {
   const pts = [];
   const cols = [];
   const petalRatio = petals / 2;
 
-  for (let angle = 0; angle < Math.PI * 2; angle += 0.03) {
+  for (let angle = 0; angle < Math.PI * 2; angle += 0.022) {
     const polarRadius = radius * Math.cos(petalRatio * angle);
-    pts.push({
-      x: cx + polarRadius * Math.cos(angle),
-      y: cy + polarRadius * Math.sin(angle)
-    });
-    cols.push(color);
+    for (let depth = 0; depth < 3; depth += 1) {
+      pts.push({
+        x: cx + polarRadius * Math.cos(angle) + (Math.random() - 0.5) * 0.8,
+        y: cy + polarRadius * Math.sin(angle) + (Math.random() - 0.5) * 0.8
+      });
+      cols.push(color);
+    }
+  }
+
+  return { pts, cols };
+}
+
+function roseFlower(cx, cy, turns, scale, color) {
+  const pts = [];
+  const cols = [];
+
+  for (let angle = 0; angle < Math.PI * 2 * turns; angle += 0.015) {
+    const radius = 0.7 * Math.exp(0.16 * angle);
+    const x = radius * Math.cos(angle);
+    const y = radius * Math.sin(angle);
+
+    for (let depth = 0; depth < 3; depth += 1) {
+      pts.push({
+        x: cx + x * scale + (Math.random() - 0.5) * 0.7,
+        y: cy + y * scale + (Math.random() - 0.5) * 0.7
+      });
+      cols.push(color);
+    }
   }
 
   return { pts, cols };
@@ -123,7 +136,7 @@ function miniHeart(cx, cy, scale, color) {
   const pts = [];
   const cols = [];
 
-  for (let angle = 0; angle < Math.PI * 2; angle += 0.04) {
+  for (let angle = 0; angle < Math.PI * 2; angle += 0.035) {
     const x = 16 * Math.pow(Math.sin(angle), 3);
     const y =
       13 * Math.cos(angle) -
@@ -131,8 +144,13 @@ function miniHeart(cx, cy, scale, color) {
       2 * Math.cos(3 * angle) -
       Math.cos(4 * angle);
 
-    pts.push({ x: cx + x * scale, y: cy + y * scale });
-    cols.push(color);
+    for (let depth = 0; depth < 2; depth += 1) {
+      pts.push({
+        x: cx + x * scale + (Math.random() - 0.5) * 0.55,
+        y: cy + y * scale + (Math.random() - 0.5) * 0.55
+      });
+      cols.push(color);
+    }
   }
 
   return { pts, cols };
@@ -143,13 +161,19 @@ function stem(x, topY, length, color) {
   const cols = [];
 
   for (let step = 0; step < length; step += 1) {
-    const px = x + Math.sin(step * 0.11) * 2.2;
+    const px = x + Math.sin(step * 0.08) * 2.3;
     const py = topY - step;
-    pts.push({ x: px, y: py });
-    cols.push(color);
 
-    if (step % 18 === 0) {
-      pts.push({ x: px - 3.5, y: py + 2 });
+    for (let depth = 0; depth < 2; depth += 1) {
+      pts.push({
+        x: px + (Math.random() - 0.5) * 0.5,
+        y: py + (Math.random() - 0.5) * 0.5
+      });
+      cols.push(color);
+    }
+
+    if (step % 15 === 0) {
+      pts.push({ x: px + 3.2, y: py - 1.2 });
       cols.push(color);
     }
   }
@@ -161,10 +185,49 @@ function leaf(cx, cy, width, height, color) {
   const pts = [];
   const cols = [];
 
-  for (let angle = 0; angle < Math.PI * 2; angle += 0.12) {
+  for (let angle = 0; angle < Math.PI * 2; angle += 0.11) {
+    for (let depth = 0; depth < 2; depth += 1) {
+      pts.push({
+        x: cx + width * Math.cos(angle) + (Math.random() - 0.5) * 0.4,
+        y: cy + height * Math.sin(angle) + (Math.random() - 0.5) * 0.4
+      });
+      cols.push(color);
+    }
+  }
+
+  return { pts, cols };
+}
+
+function ribbon(cx, cy, size, color) {
+  const pts = [];
+  const cols = [];
+
+  for (let angle = 0; angle < Math.PI * 2; angle += 0.04) {
+    const x = Math.sin(angle) * size;
+    const y = Math.sin(angle) * Math.cos(angle) * size * 0.8;
+
+    pts.push({ x: cx - size * 0.8 + x, y: cy + y });
+    cols.push(color);
+    pts.push({ x: cx + size * 0.8 - x, y: cy + y });
+    cols.push(color);
+  }
+
+  return { pts, cols };
+}
+
+function wrapping(cx, cy, width, height, color) {
+  const pts = [];
+  const cols = [];
+
+  for (let step = 0; step <= 1; step += 0.02) {
     pts.push({
-      x: cx + width * Math.cos(angle),
-      y: cy + height * Math.sin(angle)
+      x: cx - width * step,
+      y: cy - height + height * step * 1.2
+    });
+    cols.push(color);
+    pts.push({
+      x: cx + width * step,
+      y: cy - height + height * step * 1.2
     });
     cols.push(color);
   }
@@ -182,21 +245,29 @@ function bouquetTargets() {
   }
 
   const stemColor = new THREE.Color("#65a30d");
+  const paperColor = new THREE.Color("#f5d0a9");
 
-  add(stem(-22, -4, 72, stemColor));
-  add(stem(0, 2, 84, stemColor));
-  add(stem(24, -6, 76, stemColor));
+  add(wrapping(0, -8, 40, 34, paperColor));
+  add(stem(-24, 10, 88, stemColor));
+  add(stem(0, 18, 98, stemColor));
+  add(stem(26, 12, 92, stemColor));
+  add(stem(-46, 4, 78, stemColor));
+  add(stem(48, 2, 74, stemColor));
 
-  add(leaf(-16, -34, 8, 4, new THREE.Color("#84cc16")));
-  add(leaf(8, -44, 10, 4.5, new THREE.Color("#4ade80")));
-  add(leaf(24, -28, 8, 4, new THREE.Color("#84cc16")));
+  add(leaf(-18, -30, 10, 4.8, new THREE.Color("#84cc16")));
+  add(leaf(10, -44, 11, 5.2, new THREE.Color("#4ade80")));
+  add(leaf(28, -24, 9.5, 4.5, new THREE.Color("#65a30d")));
+  add(leaf(-38, -10, 9, 4.2, new THREE.Color("#84cc16")));
+  add(leaf(42, -6, 9, 4.2, new THREE.Color("#84cc16")));
 
-  add(singleFlower(-20, 34, 5, 11, new THREE.Color("#f9a8d4")));
-  add(singleFlower(0, 44, 7, 11, new THREE.Color("#fde68a")));
-  add(singleFlower(24, 30, 6, 9, new THREE.Color("#93c5fd")));
-  add(singleFlower(-40, 14, 5, 7, new THREE.Color("#c4b5fd")));
-  add(singleFlower(42, 14, 5, 7, new THREE.Color("#86efac")));
-  add(miniHeart(0, 18, 2.3, new THREE.Color("#fb7185")));
+  add(roseFlower(-22, 40, 4.6, 2.15, new THREE.Color("#fb7185")));
+  add(roseFlower(4, 52, 4.9, 2.35, new THREE.Color("#f472b6")));
+  add(roseFlower(28, 38, 4.6, 2.1, new THREE.Color("#f9a8d4")));
+  add(blossomFlower(-46, 18, 5, 8.5, new THREE.Color("#c4b5fd")));
+  add(blossomFlower(50, 16, 6, 8, new THREE.Color("#93c5fd")));
+  add(blossomFlower(0, 24, 7, 6.8, new THREE.Color("#fde68a")));
+  add(miniHeart(6, 22, 1.8, new THREE.Color("#fb7185")));
+  add(ribbon(0, -14, 8, new THREE.Color("#fb7185")));
 
   return { pts, cols };
 }
@@ -240,6 +311,14 @@ for (let index = 0; index < particleCount; index += 1) {
 }
 
 geometry.setAttribute("color", new THREE.BufferAttribute(colors, 3));
+
+function resetHandState() {
+  state.handPresent = false;
+  state.openPalm = false;
+  state.pinchScale = 1;
+  state.handX = 0;
+  state.handY = 0;
+}
 
 function resizeScene() {
   const width = stage.clientWidth;
@@ -303,12 +382,17 @@ function withTimeout(promise, timeoutMs, message) {
 }
 
 async function startGestureControl() {
-  if (state.cameraStarted || state.startingCamera) {
+  if (state.cameraStarted) {
+    stopGestureControl("Đã tắt camera. Quay lại điều khiển bằng chuột.");
+    return;
+  }
+
+  if (state.startingCamera) {
     return;
   }
 
   if (!navigator.mediaDevices?.getUserMedia) {
-    gestureStatus.textContent = "Trình duyệt này chưa hỗ trợ webcam để điều khiển.";
+    gestureStatus.textContent = "Trình duyệt này chưa hỗ trợ camera để điều khiển.";
     return;
   }
 
@@ -316,11 +400,9 @@ async function startGestureControl() {
   startGestureBtn.disabled = true;
   startGestureBtn.textContent = "Đang bật camera...";
   gestureStatus.textContent = "Đang tải chế độ điều khiển bằng tay...";
-  cameraPlaceholder.textContent = "Đang chuẩn bị camera...";
 
   try {
     gestureStatus.textContent = "Đang xin quyền camera...";
-    cameraPlaceholder.textContent = "Trình duyệt sắp hỏi quyền camera...";
 
     const stream = await navigator.mediaDevices.getUserMedia({
       audio: false,
@@ -334,8 +416,6 @@ async function startGestureControl() {
     state.stream = stream;
     gestureVideo.srcObject = stream;
     await gestureVideo.play().catch(() => {});
-    cameraPreview.classList.add("is-active");
-    cameraPlaceholder.textContent = "Camera đã bật. Đang tải nhận diện bàn tay...";
 
     await withTimeout(
       loadExternalScript("https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"),
@@ -358,9 +438,7 @@ async function startGestureControl() {
       const landmarks = results.multiHandLandmarks?.[0];
 
       if (!landmarks) {
-        state.handPresent = false;
-        state.openPalm = false;
-        state.pinchScale = 1;
+        resetHandState();
         return;
       }
 
@@ -372,7 +450,17 @@ async function startGestureControl() {
       const dy = landmarks[4].y - landmarks[8].y;
       const distance = Math.sqrt(dx * dx + dy * dy);
       state.pinchScale = THREE.MathUtils.clamp(1 + (0.24 - distance * 2.15), 0.7, 2.1);
-      state.openPalm = landmarks[8].y < landmarks[6].y;
+
+      const extendedFingerCount = [
+        [8, 6, 5],
+        [12, 10, 9],
+        [16, 14, 13],
+        [20, 18, 17]
+      ].reduce((count, [tip, pip, mcp]) => {
+        return count + (landmarks[tip].y < landmarks[pip].y && landmarks[pip].y < landmarks[mcp].y ? 1 : 0);
+      }, 0);
+
+      state.openPalm = extendedFingerCount >= 3;
     });
 
     state.frameLoopRunning = true;
@@ -395,38 +483,48 @@ async function startGestureControl() {
 
     requestAnimationFrame(processFrame);
     state.cameraStarted = true;
-    startGestureBtn.textContent = "Webcam đã bật";
+    startGestureBtn.disabled = false;
+    startGestureBtn.textContent = "Tắt camera điều khiển";
     gestureStatus.textContent =
-      "Webcam đã sẵn sàng. Khép tay để xem bó hoa, xòe tay để hiện 29/04.";
+      "Camera đã bật. Xòe bàn tay để hiện 29/04, khum hoặc nắm tay lại để trở về bó hoa.";
   } catch (error) {
     console.error(error);
-    startGestureBtn.disabled = false;
-    startGestureBtn.textContent = "Bật webcam điều khiển";
-    if (state.stream) {
-      state.stream.getTracks().forEach((track) => track.stop());
-      state.stream = null;
-    }
-    gestureVideo.srcObject = null;
-    cameraPreview.classList.remove("is-active");
+    stopGestureControl();
     if (error?.name === "NotAllowedError") {
       gestureStatus.textContent =
         "Bạn vừa từ chối quyền camera. Hãy cho phép camera rồi bấm lại nút này.";
-      cameraPlaceholder.textContent = "Camera đang bị chặn. Hãy cho phép quyền truy cập rồi thử lại.";
     } else if (error?.name === "NotFoundError") {
       gestureStatus.textContent =
         "Thiết bị này không tìm thấy camera khả dụng để bật điều khiển bằng tay.";
-      cameraPlaceholder.textContent = "Không tìm thấy camera khả dụng trên thiết bị này.";
     } else if (error?.message === "Tải thư viện nhận diện tay quá lâu.") {
       gestureStatus.textContent =
         "Trình duyệt tải hand-tracking quá lâu. Hãy thử tải lại trang rồi bấm lại.";
-      cameraPlaceholder.textContent = "Không tải kịp thư viện hand-tracking. Hãy refresh trang rồi thử lại.";
     } else {
       gestureStatus.textContent =
-        "Không mở được webcam. Bạn vẫn có thể dùng chuột hoặc chạm để xem hiệu ứng 3D.";
-      cameraPlaceholder.textContent = "Chưa bật được camera. Bạn vẫn có thể xem hiệu ứng bằng chuột hoặc chạm.";
+        "Không mở được camera. Bạn vẫn có thể dùng chuột hoặc chạm để xem hiệu ứng 3D.";
     }
   } finally {
     state.startingCamera = false;
+  }
+}
+
+function stopGestureControl(statusMessage) {
+  state.frameLoopRunning = false;
+  state.cameraStarted = false;
+  resetHandState();
+
+  if (state.stream) {
+    state.stream.getTracks().forEach((track) => track.stop());
+    state.stream = null;
+  }
+
+  gestureVideo.pause();
+  gestureVideo.srcObject = null;
+  startGestureBtn.disabled = false;
+  startGestureBtn.textContent = "Bật camera điều khiển";
+
+  if (statusMessage) {
+    gestureStatus.textContent = statusMessage;
   }
 }
 
