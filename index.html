@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="Microsite chúc mừng sinh nhật cho ngày 27/06 với countdown, thư tay và những món quà nhỏ."
+      content="A birthday microsite filled with wishes, surprises, and a little bit of magic."
     />
-    <title>27/06 | Chúc Mừng Sinh Nhật</title>
+    <title>Chúc Mừng Sinh Nhật</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -32,25 +32,18 @@
     <main class="page-shell">
       <section class="hero panel">
         <div class="hero-copy">
-          <p class="hero-kicker" id="heroKicker">27/06 | chiếc web nhỏ dành riêng cho em</p>
           <h1 id="heroTitle">Chúc mừng sinh nhật</h1>
           <p class="hero-lead" id="heroLead"></p>
           <p class="hero-note" id="heroNote"></p>
-          <div class="hero-chips" id="heroChips"></div>
 
           <div class="hero-actions">
-            <button class="primary-btn" id="openLetterBtn">Mở thư ngày 27/06</button>
-            <a class="ghost-btn" href="#surprises">Mở hộp quà</a>
+            <button class="primary-btn" id="openLetterBtn">Mở thư tay</button>
+            <a class="ghost-btn" href="#surprises">Xem bất ngờ</a>
           </div>
         </div>
 
         <div class="hero-card">
-          <div class="hero-stamp">
-            <span class="hero-stamp-label">Save The Date</span>
-            <strong id="heroDateValue">27/06</strong>
-            <small id="heroDateNote">Mọi điều dễ thương sẽ hẹn nhau đến đúng ngày này.</small>
-          </div>
-          <div class="countdown-label">Đếm ngược đến lần sinh nhật gần nhất</div>
+          <div class="countdown-label">Đếm ngược đến sinh nhật tiếp theo</div>
           <div class="countdown-grid">
             <article class="countdown-item">
               <span id="daysValue">00</span>
@@ -75,8 +68,8 @@
 
       <section class="story-grid">
         <article class="panel story-card accent-card">
-          <p class="eyebrow">27/06 Spotlight</p>
-          <h2>Một ngày được giữ riêng để mọi lời chúc đều rơi trúng tim bạn</h2>
+          <p class="eyebrow">Ngày Của Bạn</p>
+          <h2>Một ngày được dành riêng để yêu thương bạn nhiều hơn bình thường</h2>
           <p id="storyIntro"></p>
         </article>
 
@@ -89,7 +82,7 @@
       <section class="panel moments-section">
         <div class="section-heading">
           <p class="eyebrow">Điều Làm Bạn Đặc Biệt</p>
-          <h2>Những điều khiến ngày 27/06 đáng được nâng niu hơn một ngày bình thường</h2>
+          <h2>Những điều tuyệt vời mình muốn giữ lại trong ngày hôm nay</h2>
         </div>
         <div class="moments-grid" id="momentsGrid"></div>
       </section>
@@ -97,7 +90,7 @@
       <section class="panel surprises-section" id="surprises">
         <div class="section-heading">
           <p class="eyebrow">Mở Những Bất Ngờ</p>
-          <h2>Bấm vào từng món quà để mở những lời chúc đã được cất sẵn cho ngày này</h2>
+          <h2>Bấm vào từng món quà để mở lời chúc ẩn bên trong</h2>
         </div>
         <div class="gift-grid" id="giftGrid"></div>
       </section>
@@ -107,18 +100,19 @@
           <div class="interactive-copy-block">
             <div class="section-heading">
               <p class="eyebrow">Bất Ngờ 3D</p>
-              <h2>Bó hoa ánh sáng này cũng được giữ lại riêng cho đêm trước ngày 27/06</h2>
+              <h2>Bó hoa ánh sáng này cũng là một món quà dành riêng cho ngày sinh nhật</h2>
             </div>
             <p class="interactive-copy">
-              Di chuột để xoay bó hoa. Nếu muốn, bạn có thể bật camera để dùng bàn tay điều
-              khiển, và khi xòe tay ra, cụm hạt sẽ đổi thành mốc 27/06 như một tấm thiệp sáng
-              lên giữa màn hình.
+              Di chuột để xoay bó hoa. Bạn cũng có thể bật camera để dùng bàn tay điều
+              khiển, và khi xòe tay ra, cụm hạt sẽ chuyển thành lời chúc sinh nhật.
             </p>
             <div class="interactive-controls">
               <button class="primary-btn" id="startGestureBtn" type="button">
                 Bật camera điều khiển
               </button>
-              <button class="ghost-btn" id="toggleMessageBtn" type="button">Hiện 27/06</button>
+              <button class="ghost-btn" id="toggleMessageBtn" type="button">
+                Hiện HPBD
+              </button>
             </div>
             <span class="interactive-status" id="gestureStatus">
               Đang ở chế độ chuột. Rê để xoay, lăn chuột để zoom, nhấp đúp để về khung nhìn mặc định.
