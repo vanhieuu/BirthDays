@@ -42,31 +42,39 @@ const birthdayConfig = {
   gifts: [
     {
       icon: "01",
-      title: "Lời chúc đầu tiên",
-      hint: "Bên trong là một điều giản dị nhưng quan trọng.",
+      title: "Món quà đầu tiên",
+      hint: "Một hộp quà nhỏ đang chờ được mở.",
+      actionLabel: "Mở liên kết quà",
+      url: "#",
       secret:
-        "Chúc bạn luôn là chính mình thật tự tin, thật đẹp và thật vui với hành trình phía trước."
+        "Bấm nút bên dưới để mở món quà đặc biệt mình đã chuẩn bị riêng cho bạn."
     },
     {
       icon: "02",
-      title: "Món quà tinh thần",
-      hint: "Mở ra để nhận một lời nhắc nhỏ.",
+      title: "Bất ngờ thứ hai",
+      hint: "Một điều đáng yêu được giấu trong chiếc hộp này.",
+      actionLabel: "Đi tới bất ngờ",
+      url: "#",
       secret:
-        "Nếu có ngày nào mệt, hãy nhớ bạn không cần hoàn hảo để xứng đáng được yêu thương."
+        "Nếu đây là link bài hát, album ảnh, video hay voucher, bạn chỉ cần thay URL trong script.js."
     },
     {
       icon: "03",
-      title: "Điều ước bí mật",
-      hint: "Cái này dành cho những ước mơ lớn.",
+      title: "Tấm vé bí mật",
+      hint: "Mở hộp để nhận một lời mời nhỏ.",
+      actionLabel: "Nhận tấm vé",
+      url: "#",
       secret:
-        "Mong những mục tiêu bạn đang ôm ấp sẽ gặp đúng cơ hội, đúng người và đúng thời điểm."
+        "Một chiếc link có thể dẫn tới lịch hẹn, bản đồ, playlist hoặc bất cứ món quà online nào."
     },
     {
       icon: "04",
-      title: "Một cái ôm online",
-      hint: "Không chạm được, nhưng vẫn có thể cảm nhận.",
+      title: "Quà cuối cùng",
+      hint: "Mở ra sau cùng để giữ lại cảm giác thật trọn vẹn.",
+      actionLabel: "Mở món quà",
+      url: "#",
       secret:
-        "Chiếc site này xin gửi tới bạn một cái ôm thật dài, thật ấm và rất nhiều thương mến."
+        "Bạn có thể đổi món quà này thành link Google Drive, YouTube, Spotify, Shopee, vé xem phim hoặc trang riêng khác."
     }
   ],
   letterTitle: "Sinh nhật vui vẻ nhé",
@@ -142,8 +150,13 @@ function populateContent() {
     const item = document.createElement("article");
     item.className = "gift-card";
     item.innerHTML = `
+      <div class="gift-ribbon"></div>
       <div class="gift-copy">
-        <span class="gift-badge">${gift.icon}</span>
+        <span class="gift-badge">Quà ${gift.icon}</span>
+        <div class="gift-box-visual" aria-hidden="true">
+          <span class="gift-lid"></span>
+          <span class="gift-box-body"></span>
+        </div>
         <div>
           <h3>${gift.title}</h3>
           <p class="gift-hint">${gift.hint}</p>
@@ -179,8 +192,30 @@ function showSurpriseCard(gift) {
   createFlowerBurst();
   elementMap.surpriseTitle.textContent = gift.title;
   elementMap.surpriseMessage.textContent = gift.secret;
+  renderGiftAction(gift);
   elementMap.surpriseOverlay.classList.add("is-visible");
   elementMap.surpriseOverlay.setAttribute("aria-hidden", "false");
+}
+
+function renderGiftAction(gift) {
+  const existingAction = document.getElementById("surpriseAction");
+
+  if (existingAction) {
+    existingAction.remove();
+  }
+
+  if (!gift.url || gift.url === "#") {
+    return;
+  }
+
+  const action = document.createElement("a");
+  action.id = "surpriseAction";
+  action.className = "surprise-action";
+  action.href = gift.url;
+  action.target = "_blank";
+  action.rel = "noopener noreferrer";
+  action.textContent = gift.actionLabel || "Mở quà";
+  elementMap.surpriseMessage.insertAdjacentElement("afterend", action);
 }
 
 function hideSurpriseCard() {
