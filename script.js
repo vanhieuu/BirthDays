@@ -3,85 +3,85 @@ const birthdayConfig = {
   fromName: "Hiếu",
   birthdayDate: "2026-04-29",
   heroLead:
-    "Hôm nay là ngày để mọi điều dễ thương nhất trên đời tìm đến bạn nhiều hơn một chút.",
+    "Hôm nay là một ngày thật đẹp, và anh chỉ mong mọi điều tốt lành sẽ nhẹ nhàng ghé đến bên em.",
   heroNote:
-    "Mình làm chiếc landing page nhỏ này để mỗi lần mở ra, bạn sẽ thấy mình được yêu thương, được trân trọng và được chúc mừng thật tử tế.",
+    "Anh làm góc nhỏ này để khi mở ra, em sẽ biết rằng sinh nhật của em luôn là một điều rất đáng để được trân trọng.",
   storyIntro:
-    "Không phải ngày nào cũng cần thật lớn lao. Chỉ cần hôm nay bạn cười nhiều hơn, thấy lòng nhẹ hơn, và biết rằng có người luôn muốn dành những điều tốt đẹp nhất cho bạn là đủ rồi.",
-  finalTitle: "Chúc bạn có một tuổi mới thật rực rỡ",
+    "Sinh nhật không nhất thiết phải thật ồn ào mới trở nên đặc biệt. Chỉ cần hôm nay em thấy nhẹ lòng hơn một chút, cười nhiều hơn một chút, và biết rằng luôn có người mong em bình an, như thế đã là một ngày rất đẹp rồi.",
+  finalTitle: "Mong tuổi mới sẽ nhẹ nhàng và tươi sáng hơn với em",
   finalCopy:
-    "Chúc cho những dự định của bạn đều dần thành hình, những điều đang cố gắng sẽ sớm được đền đáp, và trái tim bạn lúc nào cũng đủ bình yên để tận hưởng từng niềm vui nhỏ. Hôm nay và cả những ngày sau nữa, bạn xứng đáng với thật nhiều yêu thương.",
+    "Mong những điều em đang mong sẽ dần thành hình theo cách đẹp nhất. Mong những ngày áp lực sẽ bớt đi, những niềm vui sẽ ở lại lâu hơn, và em luôn giữ được sự bình yên để tận hưởng cả những điều rất nhỏ. Không chỉ hôm nay, mà cả những ngày bình thường sau này nữa, anh vẫn mong em gặp thật nhiều điều tử tế.",
   wishes: [
     {
-      title: "Sức khỏe thật tốt",
-      text: "Để mỗi ngày thức dậy đều có đủ năng lượng làm điều bạn thích."
+      title: "Một sức khỏe thật tốt",
+      text: "Để mỗi ngày bắt đầu đều đủ nhẹ nhàng và đủ năng lượng cho những điều em quan tâm."
     },
     {
-      title: "Nhiều điều may mắn",
-      text: "Để những cố gắng âm thầm của bạn được gặp đúng thời điểm đẹp."
+      title: "Nhiều may mắn vừa đủ",
+      text: "Để những cố gắng lặng lẽ của em luôn gặp được đúng thời điểm xứng đáng."
     },
     {
-      title: "Niềm vui thật lâu",
-      text: "Để bạn luôn có người cùng cười, cùng đi và cùng nhớ những ngày đặc biệt."
+      title: "Niềm vui ở lại lâu hơn",
+      text: "Để bên cạnh em luôn có những người khiến cuộc sống trở nên dễ chịu và đáng nhớ."
     }
   ],
   moments: [
     {
-      title: "Một nụ cười rất sáng",
-      text: "Kiểu nụ cười làm cả căn phòng dịu đi và khiến người đối diện tự nhiên muốn tốt hơn."
+      title: "Nụ cười rất riêng",
+      text: "Là kiểu nụ cười khiến mọi thứ xung quanh dường như cũng trở nên dịu hơn."
     },
     {
-      title: "Một trái tim biết quan tâm",
-      text: "Bạn để ý cả những điều nhỏ xíu, và chính điều đó làm bạn trở nên đặc biệt."
+      title: "Một trái tim biết để tâm",
+      text: "Em luôn nhớ cả những điều rất nhỏ, và chính sự tinh tế ấy làm em trở nên đặc biệt."
     },
     {
-      title: "Một nguồn năng lượng ấm áp",
-      text: "Ở cạnh bạn luôn có cảm giác nhẹ nhàng, an toàn và đáng để trân trọng."
+      title: "Một sự ấm áp rất riêng",
+      text: "Ở cạnh em luôn có cảm giác nhẹ lòng, bình yên, và rất dễ thấy thoải mái."
     }
   ],
   gifts: [
     {
       icon: "01",
-      title: "Món quà đầu tiên",
-      hint: "Một hộp quà nhỏ đang chờ được mở.",
-      actionLabel: "Mở liên kết quà",
+      title: "Một điều nhỏ dành cho em",
+      hint: "Một chiếc hộp nhỏ đang cất một chút dễ thương.",
+      actionLabel: "Mở món quà này",
       url: "#",
       secret:
-        "Bấm nút bên dưới để mở món quà đặc biệt mình đã chuẩn bị riêng cho bạn."
+        "Bên trong là một điều anh chuẩn bị riêng cho em trong ngày đặc biệt này."
     },
     {
       icon: "02",
-      title: "Bất ngờ thứ hai",
-      hint: "Một điều đáng yêu được giấu trong chiếc hộp này.",
-      actionLabel: "Đi tới bất ngờ",
+      title: "Một bất ngờ tiếp theo",
+      hint: "Có một điều nhỏ nhưng đáng để mỉm cười đang nằm trong chiếc hộp này.",
+      actionLabel: "Đi đến món quà",
       url: "#",
       secret:
-        "Nếu đây là link bài hát, album ảnh, video hay voucher, bạn chỉ cần thay URL trong script.js."
+        "Nếu muốn, món quà này có thể là một bài hát, một album ảnh, một video hay bất kỳ điều gì khiến em thấy vui."
     },
     {
       icon: "03",
-      title: "Tấm vé bí mật",
-      hint: "Mở hộp để nhận một lời mời nhỏ.",
-      actionLabel: "Nhận tấm vé",
+      title: "Một lời mời nho nhỏ",
+      hint: "Mở ra để nhận một lời hẹn đáng mong chờ.",
+      actionLabel: "Mở lời mời",
       url: "#",
       secret:
-        "Một chiếc link có thể dẫn tới lịch hẹn, bản đồ, playlist hoặc bất cứ món quà online nào."
+        "Một chiếc link nhỏ thôi, nhưng có thể dẫn đến một buổi hẹn, một playlist, hay một điều gì đó đáng để nhớ."
     },
     {
       icon: "04",
-      title: "Quà cuối cùng",
-      hint: "Mở ra sau cùng để giữ lại cảm giác thật trọn vẹn.",
-      actionLabel: "Mở món quà",
+      title: "Điều để lại sau cùng",
+      hint: "Chiếc hộp cuối cùng thường là chiếc hộp khiến người ta muốn mở chậm lại một chút.",
+      actionLabel: "Mở điều cuối cùng",
       url: "#",
       secret:
-        "Bạn có thể đổi món quà này thành link Google Drive, YouTube, Spotify, Shopee, vé xem phim hoặc trang riêng khác."
+        "Anh có thể để ở đây bất kỳ món quà online nào, miễn là đó là điều đủ đặc biệt để em nhớ đến thật lâu."
     }
   ],
-  letterTitle: "Sinh nhật vui vẻ nhé",
+  letterTitle: "Chúc mừng sinh nhật em",
   letterBody: [
-    "Hôm nay là ngày thật đẹp để nói với bạn rằng sự hiện diện của bạn luôn có ý nghĩa đặc biệt.",
-    "Mình hy vọng tuổi mới sẽ mang đến cho bạn thật nhiều dịu dàng: công việc suôn sẻ hơn, giấc ngủ ngon hơn, những ngày bớt áp lực hơn và những khoảnh khắc khiến bạn mỉm cười nhiều hơn.",
-    "Nếu có điều gì mình muốn gửi vào chiếc thư nhỏ này, thì đó là lời nhắc rằng bạn đã làm rất tốt rồi. Cứ bình tĩnh lớn lên, bình tĩnh hạnh phúc và đừng quên tận hưởng chính ngày của mình nhé."
+    "Hôm nay là một ngày thật đẹp để anh nói với em rằng sự hiện diện của em luôn là một điều rất đặc biệt.",
+    "Anh mong tuổi mới sẽ đến với em bằng nhiều thuận lợi hơn một chút, nhiều bình yên hơn một chút, và thêm thật nhiều khoảnh khắc khiến em thấy lòng mình nhẹ đi.",
+    "Nếu có một điều anh muốn gửi vào lá thư nhỏ này, thì đó là lời chúc để em luôn giữ được sự dịu dàng của riêng mình, và cũng nhận về thật nhiều điều xứng đáng với em."
   ]
 };
 
@@ -124,7 +124,7 @@ function populateContent() {
   elementMap.finalTitle.textContent = birthdayConfig.finalTitle;
   elementMap.finalCopy.textContent = birthdayConfig.finalCopy;
   elementMap.letterTitle.textContent = birthdayConfig.letterTitle;
-  elementMap.letterSignature.textContent = `Thương mến, ${birthdayConfig.fromName}`;
+  elementMap.letterSignature.textContent = "Thương em, anh";
 
   birthdayConfig.letterBody.forEach((paragraph) => {
     const textNode = document.createElement("p");
@@ -163,7 +163,7 @@ function populateContent() {
           <p class="gift-secret">${gift.secret}</p>
         </div>
       </div>
-      <button class="gift-toggle" type="button" data-index="${index}">Mở quà</button>
+      <button class="gift-toggle" type="button" data-index="${index}">Mở món quà</button>
     `;
     elementMap.giftGrid.appendChild(item);
   });
@@ -214,7 +214,7 @@ function renderGiftAction(gift) {
   action.href = gift.url;
   action.target = "_blank";
   action.rel = "noopener noreferrer";
-  action.textContent = gift.actionLabel || "Mở quà";
+  action.textContent = gift.actionLabel || "Mở món quà";
   elementMap.surpriseMessage.insertAdjacentElement("afterend", action);
 }
 
@@ -275,10 +275,10 @@ function updateCountdown() {
 
   if (totalSeconds === 0) {
     elementMap.countdownMessage.textContent =
-      "Hôm nay là ngày của bạn. Chúc mừng sinh nhật thật vui!";
+      "Hôm nay là ngày của em, mong mọi khoảnh khắc đều thật đẹp và đáng nhớ.";
   } else {
     elementMap.countdownMessage.textContent =
-      "Mỗi giây trôi qua đều đang đếm đến một ngày thật đặc biệt.";
+      "Mỗi giây trôi qua đều đang đưa anh gần hơn đến ngày đặc biệt của em.";
   }
 }
 
@@ -332,7 +332,7 @@ function bindEvents() {
     const card = toggle.closest(".gift-card");
     const giftIndex = Number(toggle.dataset.index);
     const isOpen = card.classList.toggle("is-open");
-    toggle.textContent = isOpen ? "Đóng lại" : "Mở quà";
+    toggle.textContent = isOpen ? "Khép lại" : "Mở món quà";
 
     if (isOpen) {
       showSurpriseCard(birthdayConfig.gifts[giftIndex]);
