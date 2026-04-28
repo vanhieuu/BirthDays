@@ -8,6 +8,8 @@ const startGestureBtn = document.getElementById("startGestureBtn");
 const toggleMessageBtn = document.getElementById("toggleMessageBtn");
 const gestureStatus = document.getElementById("gestureStatus");
 const gestureVideo = document.getElementById("gestureVideo");
+const HAND_LANDMARKER_MODEL_URL =
+  "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task";
 
 if (!stage || !startGestureBtn || !toggleMessageBtn || !gestureStatus || !gestureVideo) {
   throw new Error("Interactive birthday scene is missing required DOM nodes.");
@@ -26,7 +28,8 @@ const state = {
   cameraStarted: false,
   startingCamera: false,
   frameLoopRunning: false,
-  stream: null
+  stream: null,
+  handLandmarker: null
 };
 const zoomState = {
   current: 164,
@@ -422,41 +425,6 @@ const resizeObserver = new ResizeObserver(resizeScene);
 resizeObserver.observe(stage);
 resizeScene();
 
-function loadExternalScript(src) {
-  return new Promise((resolve, reject) => {
-    if (src.includes("hands.js") && window.Hands) {
-      resolve();
-      return;
-    }
-
-    const existing = document.querySelector(`script[src="${src}"]`);
-    if (existing) {
-      if (existing.dataset.loaded === "true") {
-        resolve();
-        return;
-      }
-
-      existing.addEventListener("load", resolve, { once: true });
-      existing.addEventListener("error", reject, { once: true });
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = src;
-    script.async = true;
-    script.addEventListener(
-      "load",
-      () => {
-        script.dataset.loaded = "true";
-        resolve();
-      },
-      { once: true }
-    );
-    script.addEventListener("error", reject, { once: true });
-    document.head.appendChild(script);
-  });
-}
-
 function withTimeout(promise, timeoutMs, message) {
   return Promise.race([
     promise,
@@ -466,6 +434,33 @@ function withTimeout(promise, timeoutMs, message) {
       }, timeoutMs);
     })
   ]);
+}
+
+let handLandmarkerPromise;
+
+function loadHandLandmarker() {
+  if (!handLandmarkerPromise) {
+    handLandmarkerPromise = import(
+      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/vision_bundle.mjs"
+    ).then(async ({ FilesetResolver, HandLandmarker }) => {
+      const vision = await FilesetResolver.forVisionTasks(
+        "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm"
+      );
+
+      return HandLandmarker.createFromOptions(vision, {
+        baseOptions: {
+          modelAssetPath: HAND_LANDMARKER_MODEL_URL
+        },
+        runningMode: "VIDEO",
+        numHands: 1,
+        minHandDetectionConfidence: 0.65,
+        minHandPresenceConfidence: 0.65,
+        minTrackingConfidence: 0.65
+      });
+    });
+  }
+
+  return handLandmarkerPromise;
 }
 
 async function startGestureControl() {
@@ -506,26 +501,15 @@ async function startGestureControl() {
     gestureVideo.srcObject = stream;
     await gestureVideo.play().catch(() => {});
 
-    await withTimeout(
-      loadExternalScript("https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"),
-      10000,
+    const handLandmarker = await withTimeout(
+      loadHandLandmarker(),
+      12000,
       "Tải thư viện nhận diện tay quá lâu."
     );
+    state.handLandmarker = handLandmarker;
+    let lastVideoTime = -1;
 
-    const hands = new window.Hands({
-      locateFile: (file) => `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`
-    });
-
-    hands.setOptions({
-      maxNumHands: 1,
-      modelComplexity: 1,
-      minDetectionConfidence: 0.65,
-      minTrackingConfidence: 0.65
-    });
-
-    hands.onResults((results) => {
-      const landmarks = results.multiHandLandmarks?.[0];
-
+    const applyHandResult = (landmarks) => {
       if (!landmarks) {
         resetHandState();
         return;
@@ -550,7 +534,7 @@ async function startGestureControl() {
       }, 0);
 
       state.openPalm = extendedFingerCount >= 3;
-    });
+    };
 
     state.frameLoopRunning = true;
 
@@ -561,13 +545,26 @@ async function startGestureControl() {
 
       if (gestureVideo.readyState >= 2) {
         try {
-          await hands.send({ image: gestureVideo });
+          if (gestureVideo.currentTime !== lastVideoTime) {
+            const results = handLandmarker.detectForVideo(
+              gestureVideo,
+              performance.now()
+            );
+            applyHandResult(results.landmarks?.[0]);
+            lastVideoTime = gestureVideo.currentTime;
+          }
         } catch (error) {
           console.error(error);
+          stopGestureControl(
+            "Camera đã tạm dừng vì chế độ nhận diện tay gặp lỗi. Em vẫn có thể dùng chuột để xem bó hoa."
+          );
+          return;
         }
       }
 
-      requestAnimationFrame(processFrame);
+      if (state.frameLoopRunning) {
+        requestAnimationFrame(processFrame);
+      }
     };
 
     requestAnimationFrame(processFrame);
@@ -575,7 +572,7 @@ async function startGestureControl() {
     startGestureBtn.disabled = false;
     startGestureBtn.textContent = "Tắt camera điều khiển";
     gestureStatus.textContent =
-      "Camera đã bật. Xòe bàn tay để hiện HPBD, khum hoặc nắm tay lại để bó hoa trở về. Em vẫn có thể lăn chuột để zoom.";
+      "Camera đã bật. Xòe bàn tay để hiện lời chúc, khum hoặc nắm tay lại để bó hoa trở về. Em vẫn có thể lăn chuột để zoom.";
   } catch (error) {
     console.error(error);
     stopGestureControl();
@@ -621,7 +618,7 @@ startGestureBtn.addEventListener("click", startGestureControl);
 
 toggleMessageBtn.addEventListener("click", () => {
   state.manualMessage = !state.manualMessage;
-  toggleMessageBtn.textContent = state.manualMessage ? "Hiện bó hoa" : "Hiện HPBD";
+  toggleMessageBtn.textContent = state.manualMessage ? "Hiện bó hoa" : "Hiện lời chúc";
 });
 
 stage.addEventListener("pointermove", (event) => {
@@ -665,7 +662,7 @@ stage.addEventListener(
 stage.addEventListener("dblclick", () => {
   zoomState.target = 164;
   gestureStatus.textContent = state.cameraStarted
-    ? "Camera đã bật. Xòe bàn tay để hiện HPBD, khum hoặc nắm tay lại để bó hoa trở về."
+    ? "Camera đã bật. Xòe bàn tay để hiện lời chúc, khum hoặc nắm tay lại để bó hoa trở về."
     : "Đang ở chế độ chuột. Rê để xoay, lăn chuột để zoom, nhấp đúp để trở về góc nhìn ban đầu.";
 });
 

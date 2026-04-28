@@ -695,6 +695,8 @@ h2 {
 
 .surprise-video-wrap {
   margin-top: 1.2rem;
+  width: min(100%, 420px);
+  margin-inline: auto;
   overflow: hidden;
   border-radius: 24px;
   background: rgba(45, 31, 23, 0.08);
@@ -705,10 +707,10 @@ h2 {
 .surprise-video {
   display: block;
   width: 100%;
+  height: auto;
   max-height: min(68vh, 760px);
-  aspect-ratio: 9 / 16;
+  margin: 0 auto;
   background: #1f1512;
-  object-fit: contain;
 }
 
 .mini-game {
@@ -1046,6 +1048,10 @@ h2 {
     max-height: calc(100vh - 1.7rem);
     padding: 1.25rem;
     border-radius: 24px;
+  }
+
+  .surprise-video-wrap {
+    width: 100%;
   }
 
   .mini-game-slots {

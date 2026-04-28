@@ -14,17 +14,15 @@ ROOT = Path(__file__).resolve().parents[1]
 OUTPUT_DIR = ROOT / "outputs"
 OUTPUT = OUTPUT_DIR / "birthday_dieu_trang.mp4"
 SILENT_OUTPUT = OUTPUT_DIR / "birthday_dieu_trang_silent.mp4"
-AUDIO = Path(
-    r"C:\Users\hieut\Downloads\Quang Hùng MasterD - 'Chất Gây Hại' (ft. Low G) - Official Audio  BLOOMEVER Album 'Bonus Track'.mp3"
-)
+AUDIO = ROOT / "assets" / "audio" / "birthday_track.m4a"
 
-PHOTO_DIR = Path(r"C:\Users\hieut\Downloads\My Documents [28-04-2026 17_25]")
+PHOTO_DIR = ROOT / "assets" / "photos"
 PHOTOS = [
-    PHOTO_DIR / "3077fcc069c5e89bb1d41.jpg",
-    PHOTO_DIR / "1fdc0b5f9e5a1f04464b5.jpg",
-    PHOTO_DIR / "d3612aebbfee3eb067ff2.jpg",
-    PHOTO_DIR / "314aa8c13dc4bc9ae5d53.jpg",
-    PHOTO_DIR / "597c9df408f189afd0e04.jpg",
+    PHOTO_DIR / "scene_01.jpg",
+    PHOTO_DIR / "scene_02.jpg",
+    PHOTO_DIR / "scene_03.jpg",
+    PHOTO_DIR / "scene_04.jpg",
+    PHOTO_DIR / "scene_05.jpg",
 ]
 
 W, H = 1080, 1920
@@ -34,10 +32,10 @@ INTRO_SECONDS = 4.0
 OUTRO_SECONDS = 5.0
 FINAL_WISH_SECONDS = 6.5
 
-FONT_DIR = Path(r"C:\Windows\Fonts")
-TITLE_FONT = FONT_DIR / "timesbd.ttf"
-BODY_FONT = FONT_DIR / "segoeui.ttf"
-BOLD_FONT = FONT_DIR / "segoeuib.ttf"
+FONT_DIR = Path("/System/Library/Fonts/Supplemental")
+TITLE_FONT = FONT_DIR / "Times New Roman Bold.ttf"
+BODY_FONT = FONT_DIR / "Arial Unicode.ttf"
+BOLD_FONT = FONT_DIR / "Arial Bold.ttf"
 
 
 def font(path: Path, size: int) -> ImageFont.FreeTypeFont:
@@ -49,7 +47,9 @@ def font(path: Path, size: int) -> ImageFont.FreeTypeFont:
 
 F_TITLE = font(TITLE_FONT, 86)
 F_BIG = font(TITLE_FONT, 72)
+F_BIG_PANEL = font(TITLE_FONT, 54)
 F_BODY = font(BODY_FONT, 42)
+F_BODY_PANEL = font(BODY_FONT, 36)
 F_SMALL = font(BODY_FONT, 30)
 F_LABEL = font(BOLD_FONT, 28)
 
@@ -110,7 +110,10 @@ def draw_centered_text(
 ) -> int:
     draw = ImageDraw.Draw(layer)
     lines = wrapped_lines(draw, text, font_obj, max_width)
-    line_heights = [draw.textbbox((0, 0), line, font=font_obj)[3] for line in lines]
+    line_heights = []
+    for line in lines:
+        bbox = draw.textbbox((0, 0), line, font=font_obj)
+        line_heights.append(bbox[3] - bbox[1])
     total_h = sum(line_heights) + line_gap * max(0, len(lines) - 1)
     cursor = y - total_h // 2
 
@@ -253,21 +256,21 @@ def make_final_wish_frame(t: float, frame_index: int) -> Image.Image:
     decorate(layer, frame_index, a)
 
     draw = ImageDraw.Draw(layer)
-    panel = Image.new("RGBA", (W - 120, 920), (255, 246, 239, int(a * 0.84)))
+    panel = Image.new("RGBA", (W - 140, 980), (255, 246, 239, int(a * 0.84)))
     mask = Image.new("L", panel.size, 0)
     mask_draw = ImageDraw.Draw(mask)
     mask_draw.rounded_rectangle((0, 0, panel.size[0], panel.size[1]), radius=46, fill=255)
     panel.putalpha(mask)
-    layer.alpha_composite(panel, (60, 500))
+    layer.alpha_composite(panel, (70, 500))
 
-    draw.text((112, 565), "Điều anh muốn gửi em", font=F_LABEL, fill=(232, 111, 81, a))
+    draw.text((122, 570), "Điều anh muốn gửi em", font=F_LABEL, fill=(232, 111, 81, a))
     draw_centered_text(
         layer,
         "Chúc em một tuổi mới thật mềm lòng với chính mình.",
-        705,
-        F_BIG,
+        710,
+        F_BIG_PANEL,
         (67, 43, 35, a),
-        850,
+        760,
         line_gap=10,
     )
     draw_centered_text(
@@ -275,20 +278,20 @@ def make_final_wish_frame(t: float, frame_index: int) -> Image.Image:
         "Mong mỗi ngày đi qua đều có một điều nhỏ làm em mỉm cười,\n"
         "một người khiến em thấy được lắng nghe,\n"
         "và một khoảng bình yên đủ rộng để em tựa vào.",
-        945,
-        F_BODY,
+        925,
+        F_BODY_PANEL,
         (82, 57, 48, a),
-        840,
-        line_gap=14,
+        720,
+        line_gap=20,
     )
     draw_centered_text(
         layer,
         "Phần còn lại,\nđể anh thương em thật chậm,\nthật lâu.",
-        1235,
-        F_BIG,
+        1315,
+        F_BIG_PANEL,
         (67, 43, 35, a),
-        850,
-        line_gap=10,
+        720,
+        line_gap=22,
     )
     return Image.alpha_composite(frame.convert("RGBA"), layer).convert("RGB")
 
