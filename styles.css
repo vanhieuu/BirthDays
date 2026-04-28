@@ -609,14 +609,16 @@ h2 {
   position: fixed;
   inset: 0;
   display: grid;
-  place-items: center;
-  padding: 1rem;
+  place-items: start center;
+  padding: clamp(1rem, 3vw, 2rem);
   background: rgba(45, 31, 23, 0.18);
   opacity: 0;
   visibility: hidden;
   transition:
     opacity 200ms ease,
     visibility 200ms ease;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   z-index: 6;
 }
 
@@ -641,6 +643,10 @@ h2 {
 .surprise-card {
   position: relative;
   width: min(540px, 100%);
+  max-height: min(88vh, 920px);
+  margin: auto 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
   padding: 1.5rem;
   border-radius: 30px;
   background:
@@ -659,9 +665,11 @@ h2 {
 }
 
 .surprise-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
+  position: sticky;
+  top: 0;
+  right: 0;
+  margin-left: auto;
+  z-index: 2;
 }
 
 .surprise-message {
@@ -781,7 +789,9 @@ h2 {
   }
 
   .surprise-card {
+    max-height: calc(100vh - 1.7rem);
     padding: 1.25rem;
+    border-radius: 24px;
   }
 
   .interactive-stage {
