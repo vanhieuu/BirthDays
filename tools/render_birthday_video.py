@@ -311,9 +311,9 @@ def main() -> None:
         SILENT_OUTPUT,
         fps=FPS,
         codec="libx264",
-        quality=8,
+        quality=6,
         macro_block_size=1,
-        ffmpeg_params=["-pix_fmt", "yuv420p", "-movflags", "+faststart"],
+        ffmpeg_params=["-pix_fmt", "yuv420p", "-preset", "slow", "-movflags", "+faststart"],
     ) as writer:
         for frame_index in range(total_frames):
             seconds = frame_index / FPS
