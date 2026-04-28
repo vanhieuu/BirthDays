@@ -471,7 +471,7 @@ function withTimeout(promise, timeoutMs, message) {
 async function startGestureControl() {
   if (state.cameraStarted) {
     stopGestureControl(
-      "Đã tắt camera. Quay lại điều khiển bằng chuột. Rê để xoay, lăn chuột để zoom."
+      "Đã tắt camera. Em vẫn có thể ngắm bó hoa bằng chuột: rê để xoay, lăn chuột để zoom."
     );
     return;
   }
@@ -481,7 +481,7 @@ async function startGestureControl() {
   }
 
   if (!navigator.mediaDevices?.getUserMedia) {
-    gestureStatus.textContent = "Trình duyệt này chưa hỗ trợ camera để điều khiển.";
+    gestureStatus.textContent = "Trình duyệt này chưa hỗ trợ camera để điều khiển bó hoa.";
     return;
   }
 
@@ -575,22 +575,22 @@ async function startGestureControl() {
     startGestureBtn.disabled = false;
     startGestureBtn.textContent = "Tắt camera điều khiển";
     gestureStatus.textContent =
-      "Camera đã bật. Xòe bàn tay để hiện HPBD, khum hoặc nắm tay lại để trở về bó hoa. Vẫn có thể lăn chuột để zoom.";
+      "Camera đã bật. Xòe bàn tay để hiện HPBD, khum hoặc nắm tay lại để bó hoa trở về. Em vẫn có thể lăn chuột để zoom.";
   } catch (error) {
     console.error(error);
     stopGestureControl();
     if (error?.name === "NotAllowedError") {
       gestureStatus.textContent =
-        "Bạn vừa từ chối quyền camera. Hãy cho phép camera rồi bấm lại nút này.";
+        "Em vừa từ chối quyền camera. Nếu muốn thử điều khiển bằng tay, hãy cho phép camera rồi bấm lại nút này.";
     } else if (error?.name === "NotFoundError") {
       gestureStatus.textContent =
-        "Thiết bị này không tìm thấy camera khả dụng để bật điều khiển bằng tay.";
+        "Thiết bị này chưa tìm thấy camera khả dụng để bật điều khiển bằng tay.";
     } else if (error?.message === "Tải thư viện nhận diện tay quá lâu.") {
       gestureStatus.textContent =
-        "Trình duyệt tải hand-tracking quá lâu. Hãy thử tải lại trang rồi bấm lại.";
+        "Trình duyệt tải chế độ nhận diện tay hơi lâu. Em thử tải lại trang rồi bấm lại nhé.";
     } else {
       gestureStatus.textContent =
-        "Không mở được camera. Bạn vẫn có thể dùng chuột hoặc chạm để xem hiệu ứng 3D.";
+        "Không mở được camera. Em vẫn có thể dùng chuột hoặc chạm để ngắm hiệu ứng 3D.";
     }
   } finally {
     state.startingCamera = false;
@@ -665,8 +665,8 @@ stage.addEventListener(
 stage.addEventListener("dblclick", () => {
   zoomState.target = 164;
   gestureStatus.textContent = state.cameraStarted
-    ? "Camera đã bật. Xòe bàn tay để hiện HPBD, khum hoặc nắm tay lại để trở về bó hoa."
-    : "Đang ở chế độ chuột. Rê để xoay, lăn chuột để zoom, nhấp đúp để về khung nhìn mặc định.";
+    ? "Camera đã bật. Xòe bàn tay để hiện HPBD, khum hoặc nắm tay lại để bó hoa trở về."
+    : "Đang ở chế độ chuột. Rê để xoay, lăn chuột để zoom, nhấp đúp để trở về góc nhìn ban đầu.";
 });
 
 let rotationX = 0;

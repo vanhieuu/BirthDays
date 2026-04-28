@@ -3,85 +3,86 @@ const birthdayConfig = {
   fromName: "Hiếu",
   birthdayDate: "2026-04-29",
   heroLead:
-    "Hôm nay là một ngày thật đẹp, và anh chỉ mong mọi điều tốt lành sẽ nhẹ nhàng ghé đến bên em.",
+    "Hôm nay là ngày dành cho em, ngày mà anh mong mọi dịu dàng, may mắn và bình yên đều khẽ ghé lại bên em.",
   heroNote:
-    "Anh làm góc nhỏ này để khi mở ra, em sẽ biết rằng sinh nhật của em luôn là một điều rất đáng để được trân trọng.",
+    "Anh làm góc nhỏ này như một món quà bé xinh, để mỗi khi mở ra, em có thể cảm nhận rằng ngày em đến với thế giới này luôn là một điều rất đáng được yêu thương và trân trọng.",
   storyIntro:
-    "Sinh nhật không nhất thiết phải thật ồn ào mới trở nên đặc biệt. Chỉ cần hôm nay em thấy nhẹ lòng hơn một chút, cười nhiều hơn một chút, và biết rằng luôn có người mong em bình an, như thế đã là một ngày rất đẹp rồi.",
-  finalTitle: "Mong tuổi mới sẽ nhẹ nhàng và tươi sáng hơn với em",
+    "Sinh nhật không cần phải thật rực rỡ hay ồn ào mới trở nên đáng nhớ. Chỉ cần hôm nay em thấy lòng mình nhẹ hơn một chút, nụ cười ở lại lâu hơn một chút, và biết rằng luôn có một người thật lòng mong em bình an, như thế với anh đã là một ngày rất đẹp.",
+  finalTitle: "Mong tuổi mới ôm lấy em bằng thật nhiều dịu dàng",
   finalCopy:
-    "Mong những điều em đang mong sẽ dần thành hình theo cách đẹp nhất. Mong những ngày áp lực sẽ bớt đi, những niềm vui sẽ ở lại lâu hơn, và em luôn giữ được sự bình yên để tận hưởng cả những điều rất nhỏ. Không chỉ hôm nay, mà cả những ngày bình thường sau này nữa, anh vẫn mong em gặp thật nhiều điều tử tế.",
+    "Mong những điều em đang ấp ủ sẽ dần thành hình theo cách đẹp đẽ nhất. Mong những ngày áp lực sẽ nhẹ đi, những niềm vui sẽ ở lại lâu hơn, và trong lòng em luôn có đủ bình yên để yêu thương chính mình, để tận hưởng cả những điều rất nhỏ. Không chỉ hôm nay, mà cả những ngày bình thường sau này nữa, anh vẫn mong em luôn được cuộc đời đối đãi bằng thật nhiều tử tế.",
   wishes: [
     {
       title: "Một sức khỏe thật tốt",
-      text: "Để mỗi ngày bắt đầu đều đủ nhẹ nhàng và đủ năng lượng cho những điều em quan tâm."
+      text: "Để mỗi sớm mai thức dậy, em đều có đủ an yên, đủ năng lượng và đủ vững vàng cho những điều em yêu thương."
     },
     {
-      title: "Nhiều may mắn vừa đủ",
-      text: "Để những cố gắng lặng lẽ của em luôn gặp được đúng thời điểm xứng đáng."
+      title: "Những may mắn thật đúng lúc",
+      text: "Để mọi cố gắng âm thầm của em đều được nhìn thấy, được đáp lại, và gặp đúng thời điểm xứng đáng."
     },
     {
       title: "Niềm vui ở lại lâu hơn",
-      text: "Để bên cạnh em luôn có những người khiến cuộc sống trở nên dễ chịu và đáng nhớ."
+      text: "Để bên cạnh em luôn có những người thương em thật lòng, khiến cuộc sống trở nên ấm áp, dễ chịu và đáng nhớ hơn."
     }
   ],
   moments: [
     {
       title: "Nụ cười rất riêng",
-      text: "Là kiểu nụ cười khiến mọi thứ xung quanh dường như cũng trở nên dịu hơn."
+      text: "Là kiểu nụ cười khiến mọi thứ xung quanh như mềm lại, và làm những khoảnh khắc bình thường cũng trở nên đáng giữ gìn."
     },
     {
       title: "Một trái tim biết để tâm",
-      text: "Em luôn nhớ cả những điều rất nhỏ, và chính sự tinh tế ấy làm em trở nên đặc biệt."
+      text: "Em luôn nhớ cả những điều rất nhỏ, quan tâm theo cách rất chân thành, và chính sự tinh tế ấy làm em trở nên thật đặc biệt."
     },
     {
       title: "Một sự ấm áp rất riêng",
-      text: "Ở cạnh em luôn có cảm giác nhẹ lòng, bình yên, và rất dễ thấy thoải mái."
+      text: "Ở cạnh em, anh luôn thấy lòng mình dịu xuống, như được chạm vào một khoảng bình yên rất hiền."
     }
   ],
   gifts: [
     {
       icon: "01",
       title: "Một điều nhỏ dành cho em",
-      hint: "Một chiếc hộp nhỏ đang cất một chút dễ thương.",
+      hint: "Một chiếc hộp nhỏ đang cất một chút ngọt ngào dành riêng cho em.",
       actionLabel: "Mở món quà này",
       url: "#",
       secret:
-        "Bên trong là một điều anh chuẩn bị riêng cho em trong ngày đặc biệt này."
+        "Bên trong là một chút yêu thương anh muốn gửi riêng cho em, như một lời nhắc rằng hôm nay em xứng đáng được nâng niu thật nhiều."
     },
     {
       icon: "02",
       title: "Một bất ngờ tiếp theo",
-      hint: "Có một điều nhỏ nhưng đáng để mỉm cười đang nằm trong chiếc hộp này.",
+      hint: "Có một điều nhỏ thôi, nhưng anh mong nó sẽ làm em mỉm cười.",
       actionLabel: "Đi đến món quà",
       url: "#",
       secret:
-        "Nếu muốn, món quà này có thể là một bài hát, một album ảnh, một video hay bất kỳ điều gì khiến em thấy vui."
+        "Món quà này có thể là một bài hát, một album ảnh, một video, hoặc bất kỳ điều gì khiến trái tim em thấy vui hơn trong ngày đặc biệt này."
     },
     {
       icon: "03",
       title: "Một lời mời nho nhỏ",
-      hint: "Mở ra để nhận một lời hẹn đáng mong chờ.",
+      hint: "Mở ra để nhận một lời hẹn dịu dàng và đáng mong chờ.",
       actionLabel: "Mở lời mời",
       url: "#",
       secret:
-        "Một chiếc link nhỏ thôi, nhưng có thể dẫn đến một buổi hẹn, một playlist, hay một điều gì đó đáng để nhớ."
+        "Một chiếc link nhỏ thôi, nhưng có thể dẫn đến một buổi hẹn, một playlist, hoặc một kỷ niệm mà sau này nhắc lại vẫn thấy lòng mình ấm lên."
     },
     {
       icon: "04",
       title: "Điều để lại sau cùng",
-      hint: "Chiếc hộp cuối cùng thường là chiếc hộp khiến người ta muốn mở chậm lại một chút.",
+      hint: "Chiếc hộp cuối cùng thường là điều khiến người ta muốn mở chậm lại một chút.",
       actionLabel: "Mở điều cuối cùng",
       url: "#",
       secret:
-        "Anh có thể để ở đây bất kỳ món quà online nào, miễn là đó là điều đủ đặc biệt để em nhớ đến thật lâu."
+        "Anh muốn để ở đây một điều đủ riêng, đủ thương, đủ đặc biệt để mỗi khi nhớ lại, em vẫn thấy hôm nay là một ngày thật đẹp."
     }
   ],
   letterTitle: "Chúc mừng sinh nhật em",
   letterBody: [
-    "Hôm nay là một ngày thật đẹp để anh nói với em rằng sự hiện diện của em luôn là một điều rất đặc biệt.",
-    "Anh mong tuổi mới sẽ đến với em bằng nhiều thuận lợi hơn một chút, nhiều bình yên hơn một chút, và thêm thật nhiều khoảnh khắc khiến em thấy lòng mình nhẹ đi.",
-    "Nếu có một điều anh muốn gửi vào lá thư nhỏ này, thì đó là lời chúc để em luôn giữ được sự dịu dàng của riêng mình, và cũng nhận về thật nhiều điều xứng đáng với em."
+    "Hôm nay là một ngày thật đẹp để anh được nói với em rằng sự hiện diện của em trong cuộc đời này luôn là một điều rất đáng quý.",
+    "Anh mong tuổi mới sẽ đến với em bằng nhiều thuận lợi hơn, nhiều bình yên hơn, và thật nhiều khoảnh khắc khiến em có thể mỉm cười vì thấy mình được yêu thương đúng cách.",
+    "Mong em luôn giữ được sự dịu dàng rất riêng của mình, nhưng cũng đừng quên yêu thương và chở che cho chính em. Em xứng đáng với những điều chân thành, tử tế và đẹp đẽ nhất.",
+    "Cảm ơn em vì đã là em, vì đã mang đến cho anh những cảm xúc rất nhẹ, rất thương, và rất khó gọi thành lời."
   ]
 };
 
@@ -254,7 +255,7 @@ function updateCountdown() {
 
   if (!upcomingBirthday) {
     elementMap.countdownMessage.textContent =
-      "Chỉ cần cập nhật birthdayDate trong script.js là đồng đếm ngược sẽ chạy.";
+      "Chỉ cần cập nhật birthdayDate trong script.js là đồng hồ đếm ngược sẽ chạy.";
     return;
   }
 
@@ -275,10 +276,10 @@ function updateCountdown() {
 
   if (totalSeconds === 0) {
     elementMap.countdownMessage.textContent =
-      "Hôm nay là ngày của em, mong mọi khoảnh khắc đều thật đẹp và đáng nhớ.";
+      "Hôm nay là ngày của em, mong từng khoảnh khắc đều dịu dàng, ấm áp và đáng nhớ.";
   } else {
     elementMap.countdownMessage.textContent =
-      "Mỗi giây trôi qua đều đang đưa anh gần hơn đến ngày đặc biệt của em.";
+      "Mỗi giây trôi qua đều đang đưa anh gần hơn đến ngày đặc biệt mà anh luôn muốn dành cho em thật nhiều yêu thương.";
   }
 }
 
