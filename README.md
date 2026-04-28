@@ -22,6 +22,23 @@ python3 -m http.server 4173
 
 Sau do mo `http://localhost:4173`.
 
+## Luu yeu cau vao Google Sheets
+
+Form trong `Qua 03` khong ghi truc tiep vao Google Sheets bang link spreadsheet. Can tao Google Apps Script Web App lam endpoint trung gian:
+
+1. Mo sheet:
+   `https://docs.google.com/spreadsheets/d/1Fdde4jIIDt5bQh0fM_WO2FDVBONYGQRlq9AwkGh8A5A/edit?usp=sharing`
+2. Vao `Extensions` -> `Apps Script`.
+3. Copy noi dung file `google-apps-script.js` vao `Code.gs`.
+4. Bam `Deploy` -> `New deployment`.
+5. Chon loai `Web app`.
+6. `Execute as`: `Me`.
+7. `Who has access`: `Anyone`.
+8. Bam `Deploy`, cap quyen, roi copy `Web app URL`.
+9. Dan URL do vao `requestSheetWebAppUrl` trong `script.js`.
+
+Sau khi cau hinh xong, moi lan submit form se them mot dong vao tab `Requests`.
+
 ## Deploy
 
 Repo nay duoc publish truc tiep tu nhanh `main` va thu muc goc `/` bang GitHub Pages.
