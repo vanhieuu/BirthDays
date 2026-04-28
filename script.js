@@ -2,6 +2,12 @@ const birthdayConfig = {
   recipientName: "Em",
   fromName: "Hiếu",
   birthdayDate: "2026-04-29",
+  requestEmail: "vanhieuu99@gmail.com",
+  facebookUrl: "https://www.facebook.com/van.hieuu99/",
+  requestSheetUrl:
+    "https://docs.google.com/spreadsheets/d/1Fdde4jIIDt5bQh0fM_WO2FDVBONYGQRlq9AwkGh8A5A/edit?usp=sharing",
+  requestSheetWebAppUrl:
+    "https://script.google.com/macros/s/AKfycbyUxQIiugJF-wVgKxLNlNR2tCb3dChBrQU6tLsSDDz0W-4dhEcmh4z7cWMi9kQhTlS6vA/exec",
   heroLead:
     "Hôm nay là ngày dành cho em, ngày mà anh mong mọi dịu dàng, may mắn và bình yên đều khẽ ghé lại bên em.",
   heroNote:
@@ -60,12 +66,13 @@ const birthdayConfig = {
     },
     {
       icon: "03",
-      title: "Một lời mời nho nhỏ",
-      hint: "Mở ra để nhận một lời hẹn dịu dàng và đáng mong chờ.",
-      actionLabel: "Mở lời mời",
+      title: "Chỉ cần nhập yêu cầu vào, anh sẽ đáp ứng yêu cầu này cho em",
+      hint: "Mở ra để gửi cho anh một điều em muốn được đáp ứng.",
+      actionLabel: "Gửi yêu cầu",
       url: "#",
+      requestForm: true,
       secret:
-        "Một chiếc link nhỏ thôi, nhưng có thể dẫn đến một buổi hẹn, một playlist, hoặc một kỷ niệm mà sau này nhắc lại vẫn thấy lòng mình ấm lên."
+        "Em viết điều mình muốn vào ô bên dưới, anh sẽ nhận được và giữ lời với em."
     },
     {
       icon: "04",
@@ -193,22 +200,31 @@ function showSurpriseCard(gift) {
   createFlowerBurst();
   elementMap.surpriseTitle.textContent = gift.title;
   elementMap.surpriseMessage.textContent = gift.secret;
-  renderGiftAction(gift);
+  renderGiftExtra(gift);
   elementMap.surpriseOverlay.classList.add("is-visible");
   elementMap.surpriseOverlay.setAttribute("aria-hidden", "false");
 }
 
-function renderGiftAction(gift) {
-  const existingAction = document.getElementById("surpriseAction");
+function clearGiftExtra() {
+  document.getElementById("surpriseAction")?.remove();
+  document.getElementById("requestForm")?.remove();
+  document.getElementById("requestStatus")?.remove();
+}
 
-  if (existingAction) {
-    existingAction.remove();
-  }
+function renderGiftExtra(gift) {
+  clearGiftExtra();
 
-  if (!gift.url || gift.url === "#") {
+  if (gift.requestForm) {
+    renderRequestForm();
     return;
   }
 
+  if (gift.url && gift.url !== "#") {
+    renderGiftAction(gift);
+  }
+}
+
+function renderGiftAction(gift) {
   const action = document.createElement("a");
   action.id = "surpriseAction";
   action.className = "surprise-action";
@@ -217,6 +233,95 @@ function renderGiftAction(gift) {
   action.rel = "noopener noreferrer";
   action.textContent = gift.actionLabel || "Mở món quà";
   elementMap.surpriseMessage.insertAdjacentElement("afterend", action);
+}
+
+function renderRequestForm() {
+  const form = document.createElement("form");
+  form.id = "requestForm";
+  form.className = "request-form";
+  form.method = "POST";
+  form.target = "requestSubmitFrame";
+
+  if (birthdayConfig.requestSheetWebAppUrl) {
+    form.action = birthdayConfig.requestSheetWebAppUrl;
+  }
+
+  form.innerHTML = `
+    <input type="hidden" name="source" value="Trang sinh nhật" />
+    <input type="hidden" name="recipient" value="${birthdayConfig.recipientName}" />
+    <input type="hidden" name="sheetUrl" value="${birthdayConfig.requestSheetUrl}" />
+    <label class="request-label" for="requestInput">Điều em muốn anh thực hiện</label>
+    <textarea
+      id="requestInput"
+      name="request"
+      class="request-input"
+      rows="4"
+      maxlength="600"
+      placeholder="Nhập yêu cầu của em ở đây..."
+      required
+    ></textarea>
+    <button class="request-submit" type="submit">Gửi cho anh</button>
+    <div class="request-fallbacks" aria-label="Liên hệ dự phòng">
+      <a href="mailto:${birthdayConfig.requestEmail}" id="mailFallback">Gửi qua email</a>
+      <a href="${birthdayConfig.requestSheetUrl}" target="_blank" rel="noopener noreferrer">Mở bảng yêu cầu</a>
+      <a href="${birthdayConfig.facebookUrl}" target="_blank" rel="noopener noreferrer">Nhắn Facebook</a>
+    </div>
+    <iframe class="request-submit-frame" name="requestSubmitFrame" title="Gửi yêu cầu" hidden></iframe>
+  `;
+
+  const status = document.createElement("p");
+  status.id = "requestStatus";
+  status.className = "request-status";
+  status.setAttribute("role", "status");
+
+  elementMap.surpriseMessage.insertAdjacentElement("afterend", form);
+  form.insertAdjacentElement("afterend", status);
+  form.addEventListener("submit", submitRequest);
+}
+
+async function submitRequest(event) {
+  const form = event.currentTarget;
+  const input = form.querySelector("#requestInput");
+  const submitButton = form.querySelector(".request-submit");
+  const mailFallback = form.querySelector("#mailFallback");
+  const status = document.getElementById("requestStatus");
+  const requestText = input.value.trim();
+
+  if (!birthdayConfig.requestSheetWebAppUrl) {
+    event.preventDefault();
+    status.textContent =
+      "Chưa cấu hình Google Apps Script Web App URL, nên yêu cầu chưa thể tự ghi vào Google Sheets.";
+    return;
+  }
+
+  if (!requestText) {
+    event.preventDefault();
+    status.textContent = "Em nhập yêu cầu trước rồi hãy gửi nhé.";
+    input.focus();
+    return;
+  }
+
+  const subject = "Yêu cầu nhỏ từ trang sinh nhật";
+  const mailBody = [
+    "Có một yêu cầu mới từ trang sinh nhật:",
+    "",
+    requestText
+  ].join("\n");
+
+  mailFallback.href = `mailto:${birthdayConfig.requestEmail}?subject=${encodeURIComponent(
+    subject
+  )}&body=${encodeURIComponent(mailBody)}`;
+
+  submitButton.disabled = true;
+  submitButton.textContent = "Đang gửi...";
+  status.textContent = "Yêu cầu đang được gửi vào bảng của anh...";
+
+  window.setTimeout(() => {
+    input.value = "";
+    submitButton.disabled = false;
+    submitButton.textContent = "Gửi thêm yêu cầu";
+    status.textContent = "Đã gửi rồi. Yêu cầu của em sẽ nằm trong Google Sheets của anh.";
+  }, 1800);
 }
 
 function hideSurpriseCard() {
