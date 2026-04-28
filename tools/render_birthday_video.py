@@ -168,18 +168,18 @@ def make_intro_frame(t: float, frame_index: int) -> Image.Image:
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     a = int(255 * alpha_curve(t))
     decorate(layer, frame_index, a)
-    draw_centered_text(layer, "Chúc mừng sinh nhật", 720, F_BIG, (255, 248, 241, a), 900)
-    draw_centered_text(layer, "Điêu Trang", 835, F_TITLE, (255, 244, 236, a), 900)
-    draw_centered_text(layer, "Hôm nay là ngày dành riêng cho em", 990, F_BODY, (255, 238, 225, a), 820)
+    draw_centered_text(layer, "Có một ngày rất dịu", 735, F_BIG, (255, 248, 241, a), 900)
+    draw_centered_text(layer, "mà anh chỉ muốn dành hết những điều đẹp nhất", 860, F_BODY, (255, 238, 225, a), 900)
+    draw_centered_text(layer, "để đặt bên cạnh em", 970, F_BODY, (255, 238, 225, a), 820)
     return Image.alpha_composite(base.convert("RGBA"), layer).convert("RGB")
 
 
 SCENE_TEXTS = [
-    "Mong tuổi mới của em có thật nhiều bình yên, may mắn và những điều dịu dàng ở lại.",
-    "Mong những nơi em đi qua đều có ánh nắng đẹp, những người em gặp đều đối với em thật tử tế.",
-    "Mong nụ cười của em luôn được giữ gìn, vì đó là điều làm mọi khoảnh khắc trở nên rất đáng nhớ.",
-    "Anh mong em luôn được yêu thương đúng cách, được lắng nghe, được chở che và được là chính em.",
-    "Chỉ cần em vui, hôm nay đã là một ngày thật đẹp. Thương em nhiều hơn những gì anh nói thành lời.",
+    "Em biết không, có những khoảnh khắc anh nhìn em và thấy cả thế giới như chậm lại, chỉ còn lại một điều rất thương.",
+    "Anh thích cách em xuất hiện giữa phố đông, nhỏ bé thôi mà vẫn đủ làm lòng anh nghiêng về phía em thật nhiều.",
+    "Mong tuổi mới ôm em bằng nắng dịu, bằng hoa mềm, bằng những ngày mà em không cần gồng mình để được yêu thương.",
+    "Nếu có hôm nào em thấy lòng mình mỏi, anh muốn được là nơi em có thể tựa vào, không cần nói nhiều vẫn thấy an yên.",
+    "Anh không biết dùng lời nào cho đủ. Chỉ biết rằng, trong rất nhiều điều đẹp đẽ anh từng gặp, em luôn là điều anh muốn giữ lâu nhất.",
 ]
 
 
@@ -208,8 +208,9 @@ def make_photo_frame(photo: Path, text: str, t: float, scene_index: int, frame_i
     draw_soft_panel(layer, int(a * 0.88))
 
     draw = ImageDraw.Draw(layer)
-    label = f"Ký ức {scene_index + 1:02d}"
-    draw.rounded_rectangle((90, H - 540, 238, H - 493), radius=24, fill=(232, 111, 81, int(a * 0.2)))
+    label = ["Ánh nhìn của anh", "Phía em", "Tuổi mới dịu dàng", "Nơi em tựa vào", "Điều anh muốn giữ"][scene_index]
+    label_width = draw.textbbox((0, 0), label, font=F_LABEL)[2]
+    draw.rounded_rectangle((90, H - 540, 128 + label_width, H - 493), radius=24, fill=(232, 111, 81, int(a * 0.2)))
     draw.text((116, H - 529), label, font=F_LABEL, fill=(232, 111, 81, a))
     draw_centered_text(layer, text, H - 350, F_BODY, (67, 43, 35, a), 810, line_gap=10)
 
@@ -228,9 +229,9 @@ def make_outro_frame(t: float, frame_index: int) -> Image.Image:
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     a = int(255 * alpha_curve(t))
     decorate(layer, frame_index, a)
-    draw_centered_text(layer, "Điêu Trang", 710, F_TITLE, (255, 248, 241, a), 880)
-    draw_centered_text(layer, "Tuổi mới thật an yên,\nthật rực rỡ và thật nhiều yêu thương.", 900, F_BODY, (255, 242, 232, a), 850)
-    draw_centered_text(layer, "Thương em, anh Hiếu", 1145, F_BIG, (255, 246, 236, a), 860)
+    draw_centered_text(layer, "Tuổi mới của em,", 720, F_BIG, (255, 248, 241, a), 880)
+    draw_centered_text(layer, "anh mong mọi yêu thương đều tìm đúng đường về,\nđể tim em luôn mềm, mắt em luôn sáng.", 900, F_BODY, (255, 242, 232, a), 850)
+    draw_centered_text(layer, "Còn anh,\nsẽ thương em bằng những điều thật lòng nhất.", 1160, F_BIG, (255, 246, 236, a), 900)
     return Image.alpha_composite(frame.convert("RGBA"), layer).convert("RGB")
 
 
