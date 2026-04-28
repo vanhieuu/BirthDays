@@ -29,9 +29,10 @@ PHOTOS = [
 
 W, H = 1080, 1920
 FPS = 24
-SCENE_SECONDS = 4.4
-INTRO_SECONDS = 3.2
-OUTRO_SECONDS = 3.8
+SCENE_SECONDS = 5.8
+INTRO_SECONDS = 4.0
+OUTRO_SECONDS = 5.0
+FINAL_WISH_SECONDS = 6.5
 
 FONT_DIR = Path(r"C:\Windows\Fonts")
 TITLE_FONT = FONT_DIR / "timesbd.ttf"
@@ -123,13 +124,13 @@ def draw_centered_text(
     return cursor
 
 
-def draw_soft_panel(layer: Image.Image, alpha: int) -> None:
+def draw_soft_panel(layer: Image.Image, alpha: int, y: int = H - 585) -> None:
     panel = Image.new("RGBA", (W - 120, 470), (255, 248, 239, int(alpha * 0.82)))
     mask = Image.new("L", panel.size, 0)
     mask_draw = ImageDraw.Draw(mask)
     mask_draw.rounded_rectangle((0, 0, panel.size[0], panel.size[1]), radius=42, fill=255)
     panel.putalpha(mask)
-    layer.alpha_composite(panel, (60, H - 585))
+    layer.alpha_composite(panel, (60, y))
 
 
 def particles(frame_index: int, count: int = 42) -> list[tuple[int, int, int, int]]:
@@ -205,14 +206,17 @@ def make_photo_frame(photo: Path, text: str, t: float, scene_index: int, frame_i
     layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
     a = int(255 * alpha_curve(t))
     decorate(layer, frame_index, int(a * 0.75))
-    draw_soft_panel(layer, int(a * 0.88))
+    panel_y = 120 if scene_index == 1 else H - 585
+    label_y = panel_y + 45
+    text_y = panel_y + 250
+    draw_soft_panel(layer, int(a * 0.88), panel_y)
 
     draw = ImageDraw.Draw(layer)
     label = ["Ánh nhìn của anh", "Phía em", "Tuổi mới dịu dàng", "Nơi em tựa vào", "Điều anh muốn giữ"][scene_index]
     label_width = draw.textbbox((0, 0), label, font=F_LABEL)[2]
-    draw.rounded_rectangle((90, H - 540, 128 + label_width, H - 493), radius=24, fill=(232, 111, 81, int(a * 0.2)))
-    draw.text((116, H - 529), label, font=F_LABEL, fill=(232, 111, 81, a))
-    draw_centered_text(layer, text, H - 350, F_BODY, (67, 43, 35, a), 810, line_gap=10)
+    draw.rounded_rectangle((90, label_y, 128 + label_width, label_y + 47), radius=24, fill=(232, 111, 81, int(a * 0.2)))
+    draw.text((116, label_y + 11), label, font=F_LABEL, fill=(232, 111, 81, a))
+    draw_centered_text(layer, text, text_y, F_BODY, (67, 43, 35, a), 810, line_gap=10)
 
     return Image.alpha_composite(Image.alpha_composite(frame.convert("RGBA"), shade), layer).convert("RGB")
 
@@ -235,6 +239,60 @@ def make_outro_frame(t: float, frame_index: int) -> Image.Image:
     return Image.alpha_composite(frame.convert("RGBA"), layer).convert("RGB")
 
 
+def make_final_wish_frame(t: float, frame_index: int) -> Image.Image:
+    base_photo = Image.open(PHOTOS[2]).convert("RGB")
+    frame = cover_image(base_photo, (W, H), 1.18 + 0.02 * ease(t), 0, -0.02)
+    frame = frame.filter(ImageFilter.GaussianBlur(16))
+    frame = ImageEnhance.Brightness(frame).enhance(0.62)
+
+    tint = Image.new("RGB", (W, H), (74, 45, 50))
+    frame = Image.blend(frame, tint, 0.28)
+
+    layer = Image.new("RGBA", (W, H), (0, 0, 0, 0))
+    a = int(255 * alpha_curve(t))
+    decorate(layer, frame_index, a)
+
+    draw = ImageDraw.Draw(layer)
+    panel = Image.new("RGBA", (W - 120, 920), (255, 246, 239, int(a * 0.84)))
+    mask = Image.new("L", panel.size, 0)
+    mask_draw = ImageDraw.Draw(mask)
+    mask_draw.rounded_rectangle((0, 0, panel.size[0], panel.size[1]), radius=46, fill=255)
+    panel.putalpha(mask)
+    layer.alpha_composite(panel, (60, 500))
+
+    draw.text((112, 565), "Điều anh muốn gửi em", font=F_LABEL, fill=(232, 111, 81, a))
+    draw_centered_text(
+        layer,
+        "Chúc em một tuổi mới thật mềm lòng với chính mình.",
+        705,
+        F_BIG,
+        (67, 43, 35, a),
+        850,
+        line_gap=10,
+    )
+    draw_centered_text(
+        layer,
+        "Mong mỗi ngày đi qua đều có một điều nhỏ làm em mỉm cười,\n"
+        "một người khiến em thấy được lắng nghe,\n"
+        "và một khoảng bình yên đủ rộng để em tựa vào.",
+        945,
+        F_BODY,
+        (82, 57, 48, a),
+        840,
+        line_gap=14,
+    )
+    draw_centered_text(
+        layer,
+        "Phần còn lại,\nđể anh thương em thật chậm,\nthật lâu.",
+        1235,
+        F_BIG,
+        (67, 43, 35, a),
+        850,
+        line_gap=10,
+    )
+    return Image.alpha_composite(frame.convert("RGBA"), layer).convert("RGB")
+
+
 def main() -> None:
     missing = [str(path) for path in PHOTOS if not path.exists()]
     if not AUDIO.exists():
@@ -243,7 +301,7 @@ def main() -> None:
         raise FileNotFoundError("Missing media:\n" + "\n".join(missing))
 
     OUTPUT_DIR.mkdir(exist_ok=True)
-    total_seconds = INTRO_SECONDS + SCENE_SECONDS * len(PHOTOS) + OUTRO_SECONDS
+    total_seconds = INTRO_SECONDS + SCENE_SECONDS * len(PHOTOS) + OUTRO_SECONDS + FINAL_WISH_SECONDS
     total_frames = int(total_seconds * FPS)
 
     with imageio.get_writer(
@@ -263,9 +321,12 @@ def main() -> None:
                 scene_index = min(int(local // SCENE_SECONDS), len(PHOTOS) - 1)
                 t = (local - scene_index * SCENE_SECONDS) / SCENE_SECONDS
                 frame = make_photo_frame(PHOTOS[scene_index], SCENE_TEXTS[scene_index], t, scene_index, frame_index)
-            else:
+            elif seconds < INTRO_SECONDS + SCENE_SECONDS * len(PHOTOS) + OUTRO_SECONDS:
                 local = seconds - INTRO_SECONDS - SCENE_SECONDS * len(PHOTOS)
                 frame = make_outro_frame(local / OUTRO_SECONDS, frame_index)
+            else:
+                local = seconds - INTRO_SECONDS - SCENE_SECONDS * len(PHOTOS) - OUTRO_SECONDS
+                frame = make_final_wish_frame(local / FINAL_WISH_SECONDS, frame_index)
 
             writer.append_data(np.asarray(frame))
 

@@ -57,12 +57,13 @@ const birthdayConfig = {
     },
     {
       icon: "02",
-      title: "Một bất ngờ tiếp theo",
-      hint: "Có một điều nhỏ thôi, nhưng anh mong nó sẽ làm em mỉm cười.",
-      actionLabel: "Đi đến món quà",
+      title: "Một thước phim nhỏ dành cho em",
+      hint: "Có một video anh giữ riêng cho ngày đặc biệt này.",
+      actionLabel: "Xem video",
       url: "#",
+      videoUrl: "./assets/videos/birthday_dieu_trang.mp4",
       secret:
-        "Món quà này có thể là một bài hát, một album ảnh, một video, hoặc bất kỳ điều gì khiến trái tim em thấy vui hơn trong ngày đặc biệt này."
+        "Anh gom vài khoảnh khắc của em, thêm một chút nhạc và thật nhiều điều muốn nói, để gửi em món quà nhỏ này."
     },
     {
       icon: "03",
@@ -76,12 +77,13 @@ const birthdayConfig = {
     },
     {
       icon: "04",
-      title: "Điều để lại sau cùng",
-      hint: "Chiếc hộp cuối cùng thường là điều khiến người ta muốn mở chậm lại một chút.",
-      actionLabel: "Mở điều cuối cùng",
+      title: "Một bí mật nho nhỏ",
+      hint: "Ghép vài biểu tượng nhỏ để mở điều anh cất sau cùng.",
+      actionLabel: "Mở mini game",
       url: "#",
+      miniGame: true,
       secret:
-        "Anh muốn để ở đây một điều đủ riêng, đủ thương, đủ đặc biệt để mỗi khi nhớ lại, em vẫn thấy hôm nay là một ngày thật đẹp."
+        "Có một lời nhắn nhỏ đang được giấu sau những biểu tượng này."
     }
   ],
   letterTitle: "Chúc mừng sinh nhật em",
@@ -206,22 +208,51 @@ function showSurpriseCard(gift) {
 }
 
 function clearGiftExtra() {
+  document.querySelectorAll(".surprise-video").forEach((video) => {
+    video.pause();
+  });
   document.getElementById("surpriseAction")?.remove();
   document.getElementById("requestForm")?.remove();
   document.getElementById("requestStatus")?.remove();
+  document.getElementById("surpriseVideoWrap")?.remove();
+  document.getElementById("miniGameWrap")?.remove();
 }
 
 function renderGiftExtra(gift) {
   clearGiftExtra();
+
+  if (gift.videoUrl) {
+    renderGiftVideo(gift);
+    return;
+  }
 
   if (gift.requestForm) {
     renderRequestForm();
     return;
   }
 
+  if (gift.miniGame) {
+    renderMiniGame();
+    return;
+  }
+
   if (gift.url && gift.url !== "#") {
     renderGiftAction(gift);
   }
+}
+
+function renderGiftVideo(gift) {
+  const wrap = document.createElement("div");
+  wrap.id = "surpriseVideoWrap";
+  wrap.className = "surprise-video-wrap";
+  wrap.innerHTML = `
+    <video class="surprise-video" controls playsinline preload="metadata">
+      <source src="${gift.videoUrl}" type="video/mp4" />
+      Trình duyệt của em chưa hỗ trợ phát video này.
+    </video>
+  `;
+
+  elementMap.surpriseMessage.insertAdjacentElement("afterend", wrap);
 }
 
 function renderGiftAction(gift) {
@@ -233,6 +264,97 @@ function renderGiftAction(gift) {
   action.rel = "noopener noreferrer";
   action.textContent = gift.actionLabel || "Mở món quà";
   elementMap.surpriseMessage.insertAdjacentElement("afterend", action);
+}
+
+function renderMiniGame() {
+  const wrap = document.createElement("div");
+  wrap.id = "miniGameWrap";
+  wrap.className = "mini-game";
+  wrap.innerHTML = `
+    <p class="mini-game-hint">
+      Chạm các mảnh icon theo đúng thứ tự để ghép thành lời nhắn anh giấu ở đây.
+    </p>
+    <div class="mini-game-slots" id="miniGameSlots" aria-label="Các mảnh đã ghép"></div>
+    <div class="mini-game-pieces" id="miniGamePieces" aria-label="Các mảnh icon"></div>
+    <p class="mini-game-status" id="miniGameStatus">Bắt đầu bằng điều khiến anh chú ý đến em đầu tiên.</p>
+    <div class="mini-game-secret" id="miniGameSecret" aria-hidden="true">
+      <span class="mini-secret-kicker">Bí mật mở ra</span>
+      <strong>Em là điều dịu dàng nhất mà anh muốn giữ lại thật lâu.</strong>
+      <p>
+        Nếu có một điều ước nhỏ cho hôm nay, anh ước sau này mỗi khi em thấy mỏi lòng,
+        em vẫn nhớ rằng ở đâu đó luôn có một người thương em bằng tất cả sự chân thành mình có.
+      </p>
+    </div>
+  `;
+
+  elementMap.surpriseMessage.insertAdjacentElement("afterend", wrap);
+  initMiniGame(wrap);
+}
+
+function initMiniGame(wrap) {
+  const pieces = [
+    { icon: "👀", label: "Ánh mắt", order: 0 },
+    { icon: "😊", label: "Nụ cười", order: 1 },
+    { icon: "🌷", label: "Dịu dàng", order: 2 },
+    { icon: "🕊️", label: "Bình yên", order: 3 },
+    { icon: "💗", label: "Yêu thương", order: 4 },
+    { icon: "✨", label: "Điều ước", order: 5 }
+  ];
+  const shuffledPieces = [pieces[2], pieces[5], pieces[0], pieces[4], pieces[1], pieces[3]];
+  const slots = wrap.querySelector("#miniGameSlots");
+  const pieceGrid = wrap.querySelector("#miniGamePieces");
+  const status = wrap.querySelector("#miniGameStatus");
+  const secret = wrap.querySelector("#miniGameSecret");
+  let nextOrder = 0;
+
+  slots.innerHTML = pieces
+    .map((piece) => `<span class="mini-slot" data-order="${piece.order}">${piece.order + 1}</span>`)
+    .join("");
+
+  pieceGrid.innerHTML = shuffledPieces
+    .map(
+      (piece) => `
+        <button class="mini-piece" type="button" data-order="${piece.order}">
+          <span>${piece.icon}</span>
+          <small>${piece.label}</small>
+        </button>
+      `
+    )
+    .join("");
+
+  pieceGrid.addEventListener("click", (event) => {
+    const pieceButton = event.target.closest(".mini-piece");
+
+    if (!pieceButton || pieceButton.disabled) {
+      return;
+    }
+
+    const pieceOrder = Number(pieceButton.dataset.order);
+
+    if (pieceOrder !== nextOrder) {
+      pieceButton.classList.remove("is-wrong");
+      void pieceButton.offsetWidth;
+      pieceButton.classList.add("is-wrong");
+      status.textContent = "Chưa đúng mảnh này rồi. Em thử đi theo thứ tự cảm xúc nhé.";
+      return;
+    }
+
+    const matchingSlot = slots.querySelector(`[data-order="${pieceOrder}"]`);
+    matchingSlot.textContent = pieceButton.querySelector("span").textContent;
+    matchingSlot.classList.add("is-filled");
+    pieceButton.disabled = true;
+    pieceButton.classList.add("is-used");
+    nextOrder += 1;
+
+    if (nextOrder < pieces.length) {
+      status.textContent = `Đúng rồi. Còn ${pieces.length - nextOrder} mảnh nữa để mở bí mật.`;
+      return;
+    }
+
+    status.textContent = "Em ghép xong rồi. Bí mật nhỏ của anh mở ra đây.";
+    secret.classList.add("is-visible");
+    secret.setAttribute("aria-hidden", "false");
+  });
 }
 
 function renderRequestForm() {
